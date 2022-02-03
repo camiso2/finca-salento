@@ -38,6 +38,7 @@ class BedroomController extends Controller
     public function registerBedroom(Request  $request)
     {
         try {
+
             ini_set('memory_limit', '256M');
             $file = $request->file('fileImage');
             $extension = $file->getClientOriginalExtension();
@@ -54,7 +55,7 @@ class BedroomController extends Controller
                 $constraint->upsize();
             });
             $image->orientate();
-            //$image->insert('img/logo-latintak-marca-img.png', 'bottom-right');
+
             $image->save($destinationPath . $file_name);
             registerBedroom::create($request->all());
             $registerImage = registerBedroom::latest('id')->first();
