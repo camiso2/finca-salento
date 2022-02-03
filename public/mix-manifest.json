@@ -1,0 +1,11 @@
+{
+    "/js/checkin.js": "/js/checkin.js",
+    "/js/bookings.js": "/js/bookings.js",
+    "/js/order.js": "/js/order.js",
+    "/js/listBookings.js": "/js/listBookings.js",
+    "/js/listBedrooms.js": "/js/listBedrooms.js",
+    "/js/invoice.js": "/js/invoice.js",
+    "/js/registerBedroom.js": "/js/registerBedroom.js",
+    "/js/report.js": "/js/report.js",
+    "/js/preloader.js": "/js/preloader.js"
+}
