@@ -38,7 +38,7 @@ class BedroomController extends Controller
     public function registerBedroom(Request  $request)
     {
         try {
-
+            /*test  funcional de git git*/
             ini_set('memory_limit', '256M');
             $file = $request->file('fileImage');
             $extension = $file->getClientOriginalExtension();
