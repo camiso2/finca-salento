@@ -55,7 +55,6 @@ class BedroomController extends Controller
                 $constraint->upsize();
             });
             $image->orientate();
-
             $image->save($destinationPath . $file_name);
             registerBedroom::create($request->all());
             $registerImage = registerBedroom::latest('id')->first();
