@@ -111,7 +111,6 @@ export default {
           "oops",
           false
         );
-
         return false;
       }
       document.getElementById("formReportBetweenDates").submit();
@@ -131,20 +130,7 @@ export default {
       //location.reload();
     },
     validateBetweenDates(timeEnter, timeGetout) {
-      var _timeEnter_ = new Date();
-      var _timeEnter = timeEnter.split("-");
-      _timeEnter_.setFullYear(_timeEnter[0], _timeEnter[1] - 1, _timeEnter[2]);
-
-      var _timeGetout_ = new Date();
-      var _timeGetout = timeGetout.split("-");
-      _timeGetout_.setFullYear(
-        _timeGetout[0],
-        _timeGetout[1] - 1,
-        _timeGetout[2]
-      );
-      // console.log("que es ::  ", _timeGetout_);
-      if (_timeGetout_ >= _timeEnter_) return false;
-      else return true;
+      return this.helper.helpers.validateBetweenDates(timeEnter, timeGetout);
     },
   },
 };

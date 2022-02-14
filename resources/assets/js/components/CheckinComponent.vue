@@ -151,7 +151,6 @@ export default {
       timeEnter: null,
       timeGetout: null,
       persons: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      //typeIdPersons: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       personsQuantity: "",
       typeIdent: "",
       observations: "Ninguna observación",
@@ -378,32 +377,11 @@ export default {
 
       return format.replace(/dd|mm|yy|yyy/gi, (matched) => map[matched]);
     },
-
-    validateMinorCurrent(date) {
-      var x = new Date();
-      var fecha = date.split("-");
-      x.setFullYear(fecha[0], fecha[1] - 1, fecha[2]);
-      var today = new Date();
-      //console.log("que es ::  ", x);
-      if (x >= today) return false;
-      else return true;
+    validateMinorCurrent(timeEnter, timeGetout) {
+      return this.helper.helpers.validateMinorCurrent(timeEnter, timeGetout);
     },
-
     validateBetweenDates(timeEnter, timeGetout) {
-      var _timeEnter_ = new Date();
-      var _timeEnter = timeEnter.split("-");
-      _timeEnter_.setFullYear(_timeEnter[0], _timeEnter[1] - 1, _timeEnter[2]);
-
-      var _timeGetout_ = new Date();
-      var _timeGetout = timeGetout.split("-");
-      _timeGetout_.setFullYear(
-        _timeGetout[0],
-        _timeGetout[1] - 1,
-        _timeGetout[2]
-      );
-      // console.log("que es ::  ", _timeGetout_);
-      if (_timeGetout_ >= _timeEnter_) return false;
-      else return true;
+      return this.helper.helpers.validateBetweenDates(timeEnter, timeGetout);
     },
   },
 };

@@ -14744,6 +14744,41 @@ var userSite = "Administración Web Panel";
     },
 
     /**
+     * Get boolean fech value date >= today
+     *
+     * @param String date
+     * @return boolean
+     */
+    validateMinorCurrent: function validateMinorCurrent(date) {
+      var x = new Date();
+      var fetch = date.split("-");
+      x.setFullYear(fetch[0], fetch[1] - 1, fetch[2]);
+      var today = new Date();
+      if (x >= today) return false;else return true;
+    },
+
+
+    /**
+     * Get boolean fech value timeGetout >= timeEnter
+     *
+     * @param String timeEnter
+     * @param String timeGetout
+     * @return boolean
+     */
+    validateBetweenDates: function validateBetweenDates(timeEnter, timeGetout) {
+      var _timeEnter_ = new Date();
+      var _timeEnter = timeEnter.split("-");
+      _timeEnter_.setFullYear(_timeEnter[0], _timeEnter[1] - 1, _timeEnter[2]);
+
+      var _timeGetout_ = new Date();
+      var _timeGetout = timeGetout.split("-");
+      _timeGetout_.setFullYear(_timeGetout[0], _timeGetout[1] - 1, _timeGetout[2]);
+      console.log("que es ::  ", _timeGetout_);
+      if (_timeGetout_ >= _timeEnter_) return false;else return true;
+    },
+
+
+    /**
      * Get string number format numbers > 1000
      *
      * @param String value
@@ -19811,7 +19846,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       if (isNaN(initDateValidDate) || isNaN(finalDateValidDate) || finalDateValidDate === null || initDateValidDate === null || this.validateBetweenDates(this.initDate, this.finalDate)) {
         this.helper.helpers.errorFooter("<p><b>POSIBLES ERRORES</b></p><div><ul><li>El formato de las fechas no es válido.</li><li>Las fechafinal debe ser mayor a la fecha inicial.</li></ul></div>", "Lo  Sentimos Hay un Error, La fechas no son  validas !", "oops", false);
-
         return false;
       }
       document.getElementById("formReportBetweenDates").submit();
@@ -19826,15 +19860,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //location.reload();
     },
     validateBetweenDates: function validateBetweenDates(timeEnter, timeGetout) {
-      var _timeEnter_ = new Date();
-      var _timeEnter = timeEnter.split("-");
-      _timeEnter_.setFullYear(_timeEnter[0], _timeEnter[1] - 1, _timeEnter[2]);
-
-      var _timeGetout_ = new Date();
-      var _timeGetout = timeGetout.split("-");
-      _timeGetout_.setFullYear(_timeGetout[0], _timeGetout[1] - 1, _timeGetout[2]);
-      // console.log("que es ::  ", _timeGetout_);
-      if (_timeGetout_ >= _timeEnter_) return false;else return true;
+      return this.helper.helpers.validateBetweenDates(timeEnter, timeGetout);
     }
   }
 });
