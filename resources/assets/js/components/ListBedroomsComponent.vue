@@ -138,15 +138,18 @@
 <script>
 import axios from "axios";
 import PreloaderComponent from "./PreloaderComponent";
+import Helpers from "./HelpersComponent";
 export default {
   name: "listBedrooms",
   components: {
     PreloaderComponent,
+    Helpers,
   },
   data() {
     return {
       preloader: true,
       bedRooms: [],
+      helper: Helpers,
     };
   },
   mounted() {
@@ -196,13 +199,11 @@ export default {
         .catch((error) => {
           console.log("tenemos errores" + error);
           this.preloader = false;
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Lo  Sentimos Hay un Error, Intente de Nuevo...",
-            allowOutsideClick: false,
-            //footer: '<a href="">Why do I have this issue?</a>',
-          });
+          this.helper.helpers.error(
+            "Lo Sentimos Hay un Error, Intente de Nuevo",
+            false,
+            "oops"
+          );
         });
     },
   },

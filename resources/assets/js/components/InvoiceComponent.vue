@@ -101,10 +101,12 @@
 <script>
 import axios from "axios";
 import PreloaderComponent from "./PreloaderComponent";
+import Helpers from "./HelpersComponent";
 export default {
   name: "invoice",
   components: {
     PreloaderComponent,
+    Helpers,
   },
   props: {
     user_id: String,
@@ -134,6 +136,7 @@ export default {
       advance: "",
       balanceFavor: "",
       nameClient: "",
+      helper: Helpers,
     };
   },
 
@@ -154,17 +157,14 @@ export default {
         user_id: this.user_id,
         debroom_id: this.debroom_id,
       };
-      // convertimos el array a FormData
-      var formData = this.toFormData(data);
+      // convert el array a FormData
+        var formData = this.helper.helpers.toFormData(data);
       axios
         .post("/viewInvoice", formData)
         .then((response) => {
           this.preloader = false;
           console.log("invoice : ", response.data);
           if (response.data.success == "success") {
-            /* this.selectedBedroom = "";
-            this.debroom_id = "";*/
-
             this.costDay = this.NumberFormatJS(
               response.data.bedroom.dayRoomCost
             );
@@ -197,24 +197,21 @@ export default {
             this.showViewInvoice = true;
             this.invoiceBebroom_id = this.debroom_id;
           } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Lo  Sentimos Hay un Error, Intente de Nuevo",
-              //footer: '<a href="">Why do I have this issue?</a>',
-            });
+            this.helper.helpers.error(
+              "Lo Sentimos Hay un Error, Intente de Nuevo",
+              false,
+              "oops"
+            );
           }
         })
         .catch((error) => {
           console.log("tenemos errores" + error);
           this.preloader = false;
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Lo  Sentimos Hay un Error, Intente de Nuevo",
-            allowOutsideClick: false,
-            //footer: '<a href="">Why do I have this issue?</a>',
-          });
+          this.helper.helpers.error(
+            "Lo Sentimos Hay un Error, Intente de Nuevo",
+            false,
+            "oops"
+          );
         });
     },
     async listBebroomsOccupation() {
@@ -232,13 +229,11 @@ export default {
         .catch((error) => {
           console.log("tenemos errores" + error);
           this.preloader = false;
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Lo  Sentimos Hay un Error, Intente de Nuevo...",
-            allowOutsideClick: false,
-            //footer: '<a href="">Why do I have this issue?</a>',
-          });
+          this.helper.helpers.error(
+            "Lo Sentimos Hay un Error, Intente de Nuevo",
+            false,
+            "oops"
+          );
         });
     },
     NumberFormatJS(value) {
@@ -263,15 +258,6 @@ export default {
         }
         return formated_number;
       }
-    },
-    toFormData(obj) {
-      // funcion que convierte a formData
-      var formData = new FormData();
-      for (var key in obj) {
-        formData.append(key, obj[key]);
-        console.log(key, obj[key]);
-      }
-      return formData;
     },
     roomSeleted(event) {
       if (

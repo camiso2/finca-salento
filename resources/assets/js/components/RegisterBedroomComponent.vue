@@ -20,7 +20,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12  form-group  has-feedback   ">
               <select v-model="typeBedrooms" class="form-control has-feedback">
                 <option disabled value="">
-                  &#xf0db;   Seleccionar tipo de habitación
+                  &#xf0db; Seleccionar tipo de habitación
                 </option>
                 <option value="habitacion sencilla">
                   Habitación Sencilla
@@ -69,68 +69,13 @@
             <div class=" col-md-6 col-sm-6 col-xs-12 form-group has-feedback ">
               <select v-model="bedQuantity" class="form-control">
                 <option value="">
-                  &#xf236;   Seleccione cantidad de camas
+                  &#xf236; Seleccione cantidad de camas
                 </option>
                 <option v-for="n in beds" :value="n" :key="n">
                   {{ n }}
                 </option>
               </select>
             </div>
-            <!--Define cantidad de camas spara habitación
-                                                        <script type="text/javascript">
-                                                            this.onchange = function() {}
-
-                                                            function ShowSelected() {
-                                                                var cantidad = document.getElementById("cant_camas").value;
-                                                                //alert("Has escrito:" + cantidad);
-                                                                if (cantidad > 15) {
-                                                                    alert("la cantidad deber ser menor a 15 camas por habitación");
-                                                                } else {
-                                                                    var incremento = 0;
-                                                                    incremento++;
-                                                                    //Obteniendo el Div "productos"
-                                                                    bloque = document.getElementById('campos_dinamicos');
-                                                                    //Llenando el arreglo que contendrá los "Options" de nuestro "Select"
-                                                                    var options = [
-                                                                        "Sencilla"
-                                                                        , "Doble"
-                                                                        , "Triple"
-                                                                        , "Matrimonial"
-                                                                        , "Queen.Size"
-                                                                        , "King.Size"
-                                                                        , "King.California"
-                                                                        , "Otro.Tipo"
-                                                                    , ];
-                                                                    // alert("cantida : "+cantidad);
-                                                                    //Agregando nuestros "Options" a nuestro "Select"
-                                                                    while (bloque.firstChild) bloque.removeChild(bloque.firstChild); // remover elementos;
-                                                                    for (var k = 1, cantidad = Number(cantidad); k <= cantidad; k++) {
-                                                                        //Creando el Select que irá dentro del Div "productos"
-                                                                        var salto = document.createElement("P");
-                                                                        var elemento = document.createElement('select');
-                                                                        var text = document.createTextNode(" Seleccione Cama " + k + " : ");
-                                                                        elemento.setAttribute("name", "cama" + k);
-                                                                        elemento.setAttribute('required', true);
-                                                                        elemento.id = 'select' + k;
-                                                                        elemento.className = "select";
-                                                                        //Agregando nuestros "Options" a nuestro "Select"
-                                                                        for (var i = 0; i < options.length; i++) {
-                                                                            var option = document.createElement("option");
-                                                                            option.value = options[i];
-                                                                            option.text = options[i];
-                                                                            elemento.appendChild(option);
-                                                                        }
-                                                                        bloque.appendChild(text);
-                                                                        bloque.appendChild(elemento);
-                                                                        bloque.appendChild(salto);
-                                                                        var seleccionada = elemento.options[elemento.selectedIndex].value;
-                                                                        //alert(seleccionada);
-                                                                    }
-                                                                }
-                                                            }
-                                                            onload = ShowSelected;
-
-                                                        </script> -->
             <div class="fo-top">
               <div class="form-group">
                 <label for="focusedinput" class="col-sm-2 control-label"></label>
@@ -276,29 +221,15 @@
                 (.JPG, .PNG .GIF ->se recomienda que la imagen sea
                 tomada de forma horizontal, tamaño maximo 10MP)
               </p>
-              <hr />
+              <div class=" form-group col-md-12 col-sm-12 col-xs-12 ">
+                <hr />
 
-              <div class="form-group">
-
-
-                  <div class="form-group">
-            <div class="col-md-12 col-sm-12 col-xs-12 ">
-              <hr />
-              <!--<button  class="btn btn-primary">Borrar</button>-->
-              <button  class="btn btn-success" style="width:50%">REGISTRAR HABITACIÓN</button>
-              <a href="/dashboard/bedrooms">
-                <button type="button" class="btn btn-primary">
-                  Ver Habitaciones
-                </button>
-              </a>
-            </div>
-          </div>
-
-               <!-- <button class="btn btn-success btn-block">
-                  REGISTRAR HABITACIÓN
-                </button>-->
-
-
+                <button class="btn btn-success" style="width:78%">REGISTRAR HABITACIÓN</button>
+                <a href="/dashboard/bedrooms">
+                  <button type="button" class="btn btn-primary">
+                    Ver Habitaciones <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                  </button>
+                </a>
               </div>
             </div>
           </div>
@@ -317,7 +248,8 @@ import Helpers from "./HelpersComponent";
 export default {
   name: "registerBedroom",
   components: {
-    PreloaderComponent,Helpers
+    PreloaderComponent,
+    Helpers,
   },
   computed: {},
   props: {
@@ -358,7 +290,11 @@ export default {
       this.previewImage = URL.createObjectURL(this.fileImage);
       var fileSize = event.target.files[0].size;
       if (fileSize > 1) {
-        this.helper.helpers.error("Lo Sentimos La imagen no debe pesar mas de 10MB, por favor introduzca una nueva", false, "oops");
+        this.helper.helpers.error(
+          "Lo Sentimos La imagen no debe pesar mas de 10MB, por favor introduzca una nueva",
+          false,
+          "oops"
+        );
         this.$refs.fileupload.value = "";
       }
     },
@@ -401,17 +337,24 @@ export default {
             });
             location.reload();
           } else {
-            this.helper.helpers.error("Lo Sentimos Hay un Error, Intente de Nuevo",  false,  "oops");
+            this.helper.helpers.error(
+              "Lo Sentimos Hay un Error, Intente de Nuevo",
+              false,
+              "oops"
+            );
           }
         })
         .catch((error) => {
           console.log("tenemos errores" + error);
           this.preloader = false;
           this.$refs.fileupload.value = "";
-          this.helper.helpers.error("Lo Sentimos Hay un Error, Intente de Nuevo", false, "oops");
+          this.helper.helpers.error(
+            "Lo Sentimos Hay un Error, Intente de Nuevo",
+            false,
+            "oops"
+          );
         });
     },
-
   },
 };
 </script>
@@ -450,7 +393,6 @@ select {
 #center-td {
   text-align: center;
 }
-
 
 select {
   font-family: fontAwesome, Arial, sans-serif !important ;

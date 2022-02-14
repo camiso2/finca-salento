@@ -64,7 +64,7 @@
     <script>
         $(document).ready(function()
         {
-            $(".bs-bebrooms-modal-lg").modal("show");
+           // $(".bs-bebrooms-modal-lg").modal("show");
         });
     </script>
     @include('dashboard.sections.modal_invoice')

@@ -40,10 +40,11 @@
 <script>
 import axios from "axios";
 import PreloaderComponent from "./PreloaderComponent";
+import Helpers from "./HelpersComponent";
 export default {
   name: "order",
   components: {
-    PreloaderComponent,
+    PreloaderComponent,Helpers
   },
   props: {
     user_id: String,
@@ -56,6 +57,7 @@ export default {
       order: "",
       valueOrder: "",
       debroom_id: "",
+      helper:Helpers,
     };
   },
 
@@ -94,24 +96,21 @@ export default {
               timer: 1500,
             });
           } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Lo  Sentimos Hay un Error, Intente de Nuevo",
-              //footer: '<a href="">Why do I have this issue?</a>',
-            });
+           this.helper.helpers.error(
+            "Lo Sentimos Hay un Error, Intente de Nuevo",
+            false,
+            "oops"
+          );
           }
         })
         .catch((error) => {
           console.log("tenemos errores" + error);
           this.preloader = false;
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Lo  Sentimos Hay un Error, Intente de Nuevo",
-            allowOutsideClick: false,
-            //footer: '<a href="">Why do I have this issue?</a>',
-          });
+         this.helper.helpers.error(
+            "Lo Sentimos Hay un Error, Intente de Nuevo",
+            false,
+            "oops"
+          );
         });
     },
     toFormData(obj) {
@@ -142,20 +141,6 @@ export default {
         for (let i = 0; i < request.length; i++) {
           if (request[i].codeRoom == event.target.value) {
             this.debroom_id = request[i].id;
-            /*Swal.fire({
-              title: request[i].name,
-              imageUrl: "/" + request[i].fileImage,
-              imageWidth: 400,
-              imageHeight: 200,
-              imageAlt: "Custom image",
-              html:
-                "<div><p><b>COSTO : </b>" +
-                this.NumberFormatJS(request[i].dayRoomCost) +
-                " por día</p></div>" +
-                "<div><p><b>Tipo Habitación : </b>" +
-                request[i].typeBedrooms +
-                "</p></div>",
-            });*/
           }
         }
       }
@@ -195,13 +180,11 @@ export default {
         .catch((error) => {
           console.log("tenemos errores" + error);
           this.preloader = false;
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Lo  Sentimos Hay un Error, Intente de Nuevo...",
-            allowOutsideClick: false,
-            //footer: '<a href="">Why do I have this issue?</a>',
-          });
+          this.helper.helpers.error(
+            "Lo Sentimos Hay un Error, Intente de Nuevo",
+            false,
+            "oops"
+          );
         });
     },
   },

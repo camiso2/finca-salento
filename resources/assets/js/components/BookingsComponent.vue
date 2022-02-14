@@ -75,9 +75,10 @@ import PreloaderComponent from "./PreloaderComponent";
 import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
 import "vue2-datepicker/locale/es";
+import Helpers from "./HelpersComponent";
 export default {
   name: "Bookings",
-  components: { DatePicker, PreloaderComponent },
+  components: { DatePicker, PreloaderComponent, Helpers},
   props: {
     user_id: String,
   },
@@ -100,7 +101,7 @@ export default {
       phone: "",
       advance: "0",
       preloader: false,
-      //user_id:"",
+      helper: Helpers,
     };
   },
 
@@ -124,13 +125,12 @@ export default {
         this.validateMinorCurrent(this.timeGetout) ||
         this.validateBetweenDates(this.timeEnter, this.timeGetout)
       ) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Lo  Sentimos Hay un Error, La fechas no son  validas !",
-          footer:
-            "<p><b>POSIBLES ERRORES</b></p><div><ul><li>El formato de las fechas no es válido.</li><li>Las fechas deben ser mayores a la fecha actual.</li><li>La fecha de salida del cliente no puede ser menor a la de la entrada.</li></ul></div>",
-        });
+         this.helper.helpers.errorFooter(
+          "<p><b>POSIBLES ERRORES</b></p><div><ul><li>El formato de las fechas no es válido.</li><li>Las fechas deben ser mayores a la fecha actual.</li><li>La fecha de salida del cliente no puede ser menor a la de la entrada.</li></ul></div>",
+          "Lo  Sentimos Hay un Error, La fechas no son  validas !",
+          "oops",
+          false
+        );
       } else {
         this.preloader = true;
         let data = {
@@ -144,8 +144,8 @@ export default {
           advance: this.advance,
           user_id: this.user_id,
         };
-        // convertimos el array a FormData
-        var formData = this.toFormData(data);
+        // convert el array a FormData
+        var formData = this.helper.helpers.toFormData(data);
         axios
           .post("/registerBooking", formData)
           .then((response) => {
@@ -160,61 +160,27 @@ export default {
                 timer: 1500,
               });
               location.reload();
-              /*this.timeEnter = "";
-              this.timeGetout = "";
-              this.personsQuantity = "";
-              this.observations = "";
-              this.email = "";
-              this.name = "";
-              this.phone = "";
-              this.advance = "";*/
-              /*Swal.fire({
-                icon: "success",
-                title: "La Reservación se Registró con Éxito !",
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Registrar Más Reservaciones",
-                footer:
-                  '<a href="/dashboard/home">VER LISTA DE RESERVACIONES</a>',
-                allowOutsideClick: false,
-                showClass: {
-                  popup: "animate__animated animate__fadeInDown",
-                },
-                hideClass: {
-                  popup: "animate__animated animate__fadeOutUp",
-                },
-              });*/
+
             } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Lo  Sentimos Hay un Error, Intente de Nuevo",
-                //footer: '<a href="">Why do I have this issue?</a>',
-              });
+              this.helper.helpers.error(
+              "Lo Sentimos Hay un Error, Intente de Nuevo",
+              false,
+              "oops"
+            );
             }
           })
           .catch((error) => {
             console.log("tenemos errores" + error);
             this.preloader = false;
-            this.$refs.fileupload.value = "";
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Lo  Sentimos Hay un Error, Intente de Nuevo",
-              allowOutsideClick: false,
-              //footer: '<a href="">Why do I have this issue?</a>',
-            });
+            this.helper.helpers.error(
+              "Lo Sentimos Hay un Error, Intente de Nuevo",
+              false,
+              "oops"
+            );
           });
       }
     },
-    toFormData(obj) {
-      // funcion que convierte a formData
-      var formData = new FormData();
-      for (var key in obj) {
-        formData.append(key, obj[key]);
-        console.log(key, obj[key]);
-      }
-      return formData;
-    },
+
     validateMinorCurrent(date) {
       var x = new Date();
       var fecha = date.split("-");

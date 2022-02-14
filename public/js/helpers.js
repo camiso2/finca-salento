@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 125);
+/******/ 	return __webpack_require__(__webpack_require__.s = 127);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -93,89 +93,10 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 125:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(126);
-
-
-/***/ }),
-
-/***/ 126:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
-/*require('./bootstrap');*/
-
-window.Vue = __webpack_require__(3);
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('helpers-component', __webpack_require__(127));
-//Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead);
-
-var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-  el: '#helpers'
-});
-
-/***/ }),
-
 /***/ 127:
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
-var normalizeComponent = __webpack_require__(5)
-/* script */
-var __vue_script__ = __webpack_require__(128)
-/* template */
-var __vue_template__ = null
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/HelpersComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0cec8a2f", Component.options)
-  } else {
-    hotAPI.reload("data-v-0cec8a2f", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
+module.exports = __webpack_require__(128);
 
 
 /***/ }),
@@ -185,81 +106,28 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
 
-var serverSrc = "www.baidu.com";
-var token = "12345678";
-var hasEnter = false;
-var userSite = "Islas Diaoyu de China";
-/* harmony default export */ __webpack_exports__["default"] = ({
-  userSite: userSite,
-  token: token,
-  serverSrc: serverSrc,
-  hasEnter: hasEnter,
-  helpers: {
-    /**
-     * Get string invert
-     *
-     * @param String $text
-     * @return string
-     */
-    reverseText: function reverseText(text) {
-      return text.split("").reverse().join("");
-    },
+/*require('./bootstrap');*/
 
-    /**
-     * Get all dat form Data Object
-     *
-     * @param String $obj
-     * @return object
-     */
-    toFormData: function toFormData(obj) {
-      var formData = new FormData();
-      for (var key in obj) {
-        formData.append(key, obj[key]);
-        console.log(key, obj[key]);
-      }
-      return formData;
-    },
+window.Vue = __webpack_require__(4);
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
 
-    /**
-     * Get alert error  view
-     *
-     * @param String $message
-     * @param Bool $allowOutside
-     * @param String $titleModal
-     * @return void
-     */
-    error: function error(message, allowOutside, titleModal) {
-      Swal.fire({
-        icon: "error",
-        title: titleModal,
-        text: message,
-        allowOutsideClick: allowOutside
-        //footer: '<a href="">Why do I have this issue?</a>',
-      });
-    },
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('helpers-component', __webpack_require__(40));
+//Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead);
 
-
-    /**
-    * Get alert success  view
-    *
-    * @param String $message
-    * @param Bool $allowOutside
-    * @param String $titleModal
-    * @return void
-    */
-    success: function success(message, allowOutside, titleModal) {
-      Swal.fire({
-        icon: "error",
-        title: titleModal,
-        text: message,
-        allowOutsideClick: allowOutside
-        //footer: '<a href="">Why do I have this issue?</a>',
-      });
-    }
-  }
+var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+  el: '#helpers'
 });
 
 /***/ }),
@@ -12546,19 +12414,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports, __webpack_require__) {
-
-if (false) {
-  module.exports = require('./vue.common.prod.js')
-} else {
-  module.exports = __webpack_require__(13)
-}
-
-
-/***/ }),
-
-/***/ 5:
+/***/ 2:
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -12665,6 +12521,168 @@ module.exports = function normalizeComponent (
   }
 }
 
+
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, exports, __webpack_require__) {
+
+if (false) {
+  module.exports = require('./vue.common.prod.js')
+} else {
+  module.exports = __webpack_require__(13)
+}
+
+
+/***/ }),
+
+/***/ 40:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(41)
+/* template */
+var __vue_template__ = null
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/HelpersComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0cec8a2f", Component.options)
+  } else {
+    hotAPI.reload("data-v-0cec8a2f", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 41:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+
+var serverSrc = "https://elrosario-salento.com/";
+var token = "null";
+var hasEnter = false;
+var userSite = "Administración Web Panel";
+/* harmony default export */ __webpack_exports__["default"] = ({
+  userSite: userSite,
+  token: token,
+  serverSrc: serverSrc,
+  hasEnter: hasEnter,
+  helpers: {
+    /**
+     * Get string invert
+     *
+     * @param String $text
+     * @return string
+     */
+    reverseText: function reverseText(text) {
+      return text.split("").reverse().join("");
+    },
+
+    /**
+     * Get all dat form Data Object
+     *
+     * @param String $obj
+     * @return object
+     */
+    toFormData: function toFormData(obj) {
+      var formData = new FormData();
+      for (var key in obj) {
+        formData.append(key, obj[key]);
+        console.log(key, obj[key]);
+      }
+      return formData;
+    },
+
+    /**
+     * Get alert error  view
+     *
+     * @param String $message
+     * @param Bool $allowOutside
+     * @param String $titleModal
+     * @return void
+     */
+    error: function error(message, allowOutside, titleModal) {
+      Swal.fire({
+        icon: "error",
+        title: titleModal,
+        text: message,
+        allowOutsideClick: allowOutside
+      });
+    },
+
+
+    /**
+     * Get alert error witch footer view
+     *
+     * @param String $html
+     * @param Bool $txt
+     * @param String $titleModal
+     * @return void
+     */
+    errorFooter: function errorFooter(html, txt, titleModal, allowOutside) {
+      Swal.fire({
+        icon: "error",
+        title: titleModal,
+        text: txt,
+        allowOutsideClick: allowOutside,
+        footer: html
+      });
+    },
+
+
+    /**
+    * Get alert success  view
+    *
+    * @param String $message
+    * @param Bool $allowOutside
+    * @param String $titleModal
+    * @return void
+    */
+    success: function success(message, allowOutside, titleModal) {
+      Swal.fire({
+        icon: "error",
+        title: titleModal,
+        text: message,
+        allowOutsideClick: allowOutside
+        //footer: '<a href="">Why do I have this issue?</a>',
+      });
+    }
+  }
+});
 
 /***/ }),
 

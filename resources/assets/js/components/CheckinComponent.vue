@@ -120,12 +120,15 @@ import "vue2-datepicker/index.css";
 import "vue2-datepicker/locale/es";
 import VueBootstrapTypeahead from "vue-bootstrap-typeahead";
 
+import Helpers from "./HelpersComponent";
+
 export default {
   name: "Bookings",
   components: {
     DatePicker,
     PreloaderComponent,
     VueBootstrapTypeahead,
+    Helpers,
   },
   props: {
     user_id: String,
@@ -159,6 +162,7 @@ export default {
       identClient: "",
       preloader: false,
       debroom_id: "",
+      helper: Helpers,
     };
   },
   props: {
@@ -186,13 +190,12 @@ export default {
         this.validateMinorCurrent(this.timeGetout) ||
         this.validateBetweenDates(this.timeEnter, this.timeGetout)
       ) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Lo  Sentimos Hay un Error, La fechas no son  validas !",
-          footer:
-            "<p><b>POSIBLES ERRORES</b></p><div><ul><li>Debe ingresar nacionalidad del huésped.</li><li>El formato de las fechas no es válido.</li><li>Las fechas deben ser mayores a la fecha actual.</li><li>La fecha de salida del cliente no puede ser menor a la de la entrada.</li></ul></div>",
-        });
+        this.helper.helpers.errorFooter(
+          "<p><b>POSIBLES ERRORES</b></p><div><ul><li>Debe ingresar nacionalidad del huésped.</li><li>El formato de las fechas no es válido.</li><li>Las fechas deben ser mayores a la fecha actual.</li><li>La fecha de salida del cliente no puede ser menor a la de la entrada.</li></ul></div>",
+          "Lo  Sentimos Hay un Error, La fechas no son  validas !",
+          "oops",
+          false
+        );
       } else {
         this.preloader = true;
         let data = {
@@ -214,8 +217,8 @@ export default {
           debroom_id: this.debroom_id,
           user_id: this.user_id,
         };
-        // convertimos el array a FormData
-        var formData = this.toFormData(data);
+        // convert el array a FormData
+        var formData = this.helper.helpers.toFormData(data);
         await axios
           .post("/registerCheckin", formData)
           .then((response) => {
@@ -230,60 +233,22 @@ export default {
                 timer: 1500,
               });
               location.reload();
-
-              /*this.timeEnter = "";
-              this.timeGetout = "";
-              this.name = "";
-              this.personsQuantity = "";
-              this.observations = "";
-              this.email = "";
-              this.typeIdent = "";
-              this.identClient = "";
-              this.phone = "";
-              this.email = "";
-              this.advance = "";
-              this.personsQuantity = "";
-              this.nationalitySelected = "";
-              this.selectedBedroom = "";
-              this.observations = "";
-              this.debroom_id = "";
-
-              Swal.fire({
-                icon: "success",
-                title: "El Check-in se Registró con Éxito !",
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "REGISTRAR MÁS CLIENTES",
-                footer: '<a href="/dashboard/home">VER LISTA DE CHECK-IN</a>',
-                allowOutsideClick: false,
-                showClass: {
-                  popup: "animate__animated animate__fadeInDown",
-                },
-                hideClass: {
-                  popup: "animate__animated animate__fadeOutUp",
-                },
-              }).then((result) => {
-                // Reload the Page
-                //location.reload();
-              });**/
             } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Lo  Sentimos Hay un Error, Intente de Nuevo",
-                //footer: '<a href="">Why do I have this issue?</a>',
-              });
+              this.helper.helpers.error(
+                "Lo Sentimos Hay un Error, Intente de Nuevo",
+                false,
+                "oops"
+              );
             }
           })
           .catch((error) => {
             console.log("tenemos errores" + error);
             this.preloader = false;
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Lo  Sentimos Hay un Error, Intente de Nuevo",
-              allowOutsideClick: false,
-              //footer: '<a href="">Why do I have this issue?</a>',
-            });
+            this.helper.helpers.error(
+              "Lo Sentimos Hay un Error, Intente de Nuevo",
+              false,
+              "oops"
+            );
           });
       }
     },
@@ -399,13 +364,11 @@ export default {
         .catch((error) => {
           console.log("tenemos errores" + error);
           this.preloader = false;
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Lo  Sentimos Hay un Error, Intente de Nuevo...",
-            allowOutsideClick: false,
-            //footer: '<a href="">Why do I have this issue?</a>',
-          });
+          this.helper.helpers.error(
+            "Lo Sentimos Hay un Error, Intente de Nuevo",
+            false,
+            "oops"
+          );
         });
     },
     decodeJsonCountries(json) {
@@ -425,11 +388,6 @@ export default {
     fetchCurrent() {
       const today = new Date();
       this.timeEnter = this.formatFetch(today, "yy-mm-dd");
-      /*console.log(
-        "current ::: ",
-        this.formatFetch(today, "yy-mm-dd"),
-        today.getMonth() + 1
-      );*/
     },
     formatFetch(fecha, format) {
       const map = {
@@ -443,15 +401,6 @@ export default {
       return format.replace(/dd|mm|yy|yyy/gi, (matched) => map[matched]);
     },
 
-    toFormData(obj) {
-      // funcion que convierte a formData
-      var formData = new FormData();
-      for (var key in obj) {
-        formData.append(key, obj[key]);
-        console.log(key, obj[key]);
-      }
-      return formData;
-    },
     validateMinorCurrent(date) {
       var x = new Date();
       var fecha = date.split("-");

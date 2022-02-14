@@ -68,11 +68,14 @@
 import axios from "axios";
 import PreloaderComponent from "./PreloaderComponent";
 import DatePicker from "vue2-datepicker";
+import Helpers from "./HelpersComponent";
+
 export default {
-  name: "Bookings",
+  name: "Report",
   components: {
     DatePicker,
     PreloaderComponent,
+    Helpers,
   },
   props: {
     user_id: String,
@@ -87,6 +90,7 @@ export default {
       timeGetout: null,
       preloader: false,
       fetchIni: "",
+      helper: Helpers,
     };
   },
   methods: {
@@ -101,13 +105,13 @@ export default {
         initDateValidDate === null ||
         this.validateBetweenDates(this.initDate, this.finalDate)
       ) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Lo  Sentimos Hay un Error, La fechas no son  validas !",
-          footer:
-            "<p><b>POSIBLES ERRORES</b></p><div><ul><li>El formato de las fechas no es válido.</li><li>Las fechafinal debe ser mayor a la fecha inicial.</li></ul></div>",
-        });
+        this.helper.helpers.errorFooter(
+          "<p><b>POSIBLES ERRORES</b></p><div><ul><li>El formato de las fechas no es válido.</li><li>Las fechafinal debe ser mayor a la fecha inicial.</li></ul></div>",
+          "Lo  Sentimos Hay un Error, La fechas no son  validas !",
+          "oops",
+          false
+        );
+
         return false;
       }
       document.getElementById("formReportBetweenDates").submit();
@@ -115,13 +119,12 @@ export default {
     reloadDayReport() {
       let fetchIniDate = Date.parse(this.fetchIni);
       if (isNaN(fetchIniDate) || fetchIniDate === null || fetchIniDate === "") {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Lo  Sentimos Hay un Error, La fecha no es valida !",
-          footer:
-            "<p><b>POSIBLE ERROR</b></p><div><ul><li>El formato de las fechas no es válido.</li></ul></div>",
-        });
+        this.helper.helpers.errorFooter(
+          "<p><b>POSIBLE ERROR</b></p><div><ul><li>El formato de las fechas no es válido.</li></ul></div>",
+          "Lo  Sentimos Hay un Error, La fecha no es valida !",
+          "oops",
+          false
+        );
         return false;
       }
       document.getElementById("formReportDay").submit();
