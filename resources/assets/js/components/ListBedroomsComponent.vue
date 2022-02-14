@@ -164,29 +164,8 @@ export default {
   },
   methods: {
     NumberFormatJS(value) {
-      if (parseInt(value) < 1000) {
-        return value;
-      } else {
-        var filtered_number = value.replace(/[^0-9]/gi, "");
-        var length = filtered_number.length;
-        var breakpoint = 1;
-        var formated_number = "";
-        var i;
-        for (i = 1; i <= length; i++) {
-          if (breakpoint > 3) {
-            breakpoint = 1;
-            formated_number = "." + formated_number;
-          }
-          var next_letter = i + 1;
-          formated_number =
-            filtered_number.substring(length - i, length - (i - 1)) +
-            formated_number;
-          breakpoint++;
-        }
-        return formated_number;
-      }
+      return this.helper.helpers.NumberFormatJS(value);
     },
-
     async listRooms() {
       this.preloader = true;
       await axios

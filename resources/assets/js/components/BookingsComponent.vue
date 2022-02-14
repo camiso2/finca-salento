@@ -78,7 +78,7 @@ import "vue2-datepicker/locale/es";
 import Helpers from "./HelpersComponent";
 export default {
   name: "Bookings",
-  components: { DatePicker, PreloaderComponent, Helpers},
+  components: { DatePicker, PreloaderComponent, Helpers },
   props: {
     user_id: String,
   },
@@ -125,7 +125,7 @@ export default {
         this.validateMinorCurrent(this.timeGetout) ||
         this.validateBetweenDates(this.timeEnter, this.timeGetout)
       ) {
-         this.helper.helpers.errorFooter(
+        this.helper.helpers.errorFooter(
           "<p><b>POSIBLES ERRORES</b></p><div><ul><li>El formato de las fechas no es válido.</li><li>Las fechas deben ser mayores a la fecha actual.</li><li>La fecha de salida del cliente no puede ser menor a la de la entrada.</li></ul></div>",
           "Lo  Sentimos Hay un Error, La fechas no son  validas !",
           "oops",
@@ -152,21 +152,18 @@ export default {
             this.preloader = false;
             console.log("booking : ", response.data);
             if (response.data.success == "success") {
-              Swal.fire({
-                //position: "top-end",
-                icon: "success",
-                title: "La reservación se registró con éxito",
-                showConfirmButton: false,
-                timer: 1500,
-              });
+              this.helper.helpers.success(
+                "La reservación se registró con éxito",
+                false,
+                1500
+              );
               location.reload();
-
             } else {
               this.helper.helpers.error(
-              "Lo Sentimos Hay un Error, Intente de Nuevo",
-              false,
-              "oops"
-            );
+                "Lo Sentimos Hay un Error, Intente de Nuevo",
+                false,
+                "oops"
+              );
             }
           })
           .catch((error) => {

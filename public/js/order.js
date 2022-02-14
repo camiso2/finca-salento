@@ -14744,9 +14744,36 @@ var userSite = "Administración Web Panel";
     },
 
     /**
+     * Get string number format numbers > 1000
+     *
+     * @param String value
+     * @return string
+     */
+    NumberFormatJS: function NumberFormatJS(value) {
+      if (parseInt(value) < 1000) {
+        return value;
+      }
+      var filtered_number = value.replace(/[^0-9]/gi, "");
+      var length = filtered_number.length;
+      var breakpoint = 1;
+      var formated_number = "";
+      var i;
+      for (i = 1; i <= length; i++) {
+        if (breakpoint > 3) {
+          breakpoint = 1;
+          formated_number = "." + formated_number;
+        }
+        var next_letter = i + 1;
+        formated_number = filtered_number.substring(length - i, length - (i - 1)) + formated_number;
+        breakpoint++;
+      }
+      return formated_number;
+    },
+
+    /**
      * Get all dat form Data Object
      *
-     * @param String $obj
+     * @param String obj
      * @return object
      */
     toFormData: function toFormData(obj) {
@@ -14761,9 +14788,9 @@ var userSite = "Administración Web Panel";
     /**
      * Get alert error  view
      *
-     * @param String $message
-     * @param Bool $allowOutside
-     * @param String $titleModal
+     * @param String message
+     * @param Bool allowOutside
+     * @param String titleModal
      * @return void
      */
     error: function error(message, allowOutside, titleModal) {
@@ -14779,9 +14806,9 @@ var userSite = "Administración Web Panel";
     /**
      * Get alert error witch footer view
      *
-     * @param String $html
-     * @param Bool $txt
-     * @param String $titleModal
+     * @param String html
+     * @param Bool txt
+     * @param String titleModal
      * @return void
      */
     errorFooter: function errorFooter(html, txt, titleModal, allowOutside) {
@@ -14796,20 +14823,19 @@ var userSite = "Administración Web Panel";
 
 
     /**
-    * Get alert success  view
-    *
-    * @param String $message
-    * @param Bool $allowOutside
-    * @param String $titleModal
-    * @return void
-    */
-    success: function success(message, allowOutside, titleModal) {
+     * Get alert success view
+     *
+     * @param String title
+     * @param Bool showConfirm
+     * @param String time
+     * @return void
+     */
+    success: function success(title, showConfirm, time) {
       Swal.fire({
-        icon: "error",
-        title: titleModal,
-        text: message,
-        allowOutsideClick: allowOutside
-        //footer: '<a href="">Why do I have this issue?</a>',
+        icon: "success",
+        title: "La reservación se registró con éxito",
+        showConfirmButton: showConfirm,
+        timer: time
       });
     }
   }
@@ -15843,12 +15869,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -15856,7 +15876,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "order",
   components: {
-    PreloaderComponent: __WEBPACK_IMPORTED_MODULE_2__PreloaderComponent___default.a, Helpers: __WEBPACK_IMPORTED_MODULE_3__HelpersComponent___default.a
+    PreloaderComponent: __WEBPACK_IMPORTED_MODULE_2__PreloaderComponent___default.a,
+    Helpers: __WEBPACK_IMPORTED_MODULE_3__HelpersComponent___default.a
   },
   props: {
     user_id: String
@@ -15889,24 +15910,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         user_id: this.user_id,
         debroom_id: this.debroom_id
       };
-      // convertimos el array a FormData
-      var formData = this.toFormData(data);
+      // convert el array a FormData
+      var formData = this.helper.helpers.toFormData(data);
       __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post("/registerOrder", formData).then(function (response) {
         _this.preloader = false;
         //console.log("order : ", response.data);
         if (response.data.success == "success") {
-          _this.selectedBedroom = "";
-          _this.order = "";
-          _this.valueOrder = "";
-          _this.debroom_id = "";
+          _this.helper.helpers.success("La reservación se registró con éxito", false, 1500);
           location.reload();
-          Swal.fire({
-            //position: "top-end",
-            icon: "success",
-            title: "El pedido se registró con éxito",
-            showConfirmButton: false,
-            timer: 1500
-          });
         } else {
           _this.helper.helpers.error("Lo Sentimos Hay un Error, Intente de Nuevo", false, "oops");
         }
@@ -15915,15 +15926,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         _this.preloader = false;
         _this.helper.helpers.error("Lo Sentimos Hay un Error, Intente de Nuevo", false, "oops");
       });
-    },
-    toFormData: function toFormData(obj) {
-      // funcion que convierte a formData
-      var formData = new FormData();
-      for (var key in obj) {
-        formData.append(key, obj[key]);
-        console.log(key, obj[key]);
-      }
-      return formData;
     },
     roomSeleted: function roomSeleted(event) {
       if (event.target.value == "" || event.target.value == undefined || event.target.value == null) {
@@ -15944,25 +15946,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       }
     },
     NumberFormatJS: function NumberFormatJS(value) {
-      if (parseInt(value) < 1000) {
-        return value;
-      } else {
-        var filtered_number = value.replace(/[^0-9]/gi, "");
-        var length = filtered_number.length;
-        var breakpoint = 1;
-        var formated_number = "";
-        var i;
-        for (i = 1; i <= length; i++) {
-          if (breakpoint > 3) {
-            breakpoint = 1;
-            formated_number = "." + formated_number;
-          }
-          var next_letter = i + 1;
-          formated_number = filtered_number.substring(length - i, length - (i - 1)) + formated_number;
-          breakpoint++;
-        }
-        return formated_number;
-      }
+      return this.helper.helpers.NumberFormatJS(value);
     },
     listBebroomsOccupation: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {

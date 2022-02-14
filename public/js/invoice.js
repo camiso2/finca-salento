@@ -14744,9 +14744,36 @@ var userSite = "Administración Web Panel";
     },
 
     /**
+     * Get string number format numbers > 1000
+     *
+     * @param String value
+     * @return string
+     */
+    NumberFormatJS: function NumberFormatJS(value) {
+      if (parseInt(value) < 1000) {
+        return value;
+      }
+      var filtered_number = value.replace(/[^0-9]/gi, "");
+      var length = filtered_number.length;
+      var breakpoint = 1;
+      var formated_number = "";
+      var i;
+      for (i = 1; i <= length; i++) {
+        if (breakpoint > 3) {
+          breakpoint = 1;
+          formated_number = "." + formated_number;
+        }
+        var next_letter = i + 1;
+        formated_number = filtered_number.substring(length - i, length - (i - 1)) + formated_number;
+        breakpoint++;
+      }
+      return formated_number;
+    },
+
+    /**
      * Get all dat form Data Object
      *
-     * @param String $obj
+     * @param String obj
      * @return object
      */
     toFormData: function toFormData(obj) {
@@ -14761,9 +14788,9 @@ var userSite = "Administración Web Panel";
     /**
      * Get alert error  view
      *
-     * @param String $message
-     * @param Bool $allowOutside
-     * @param String $titleModal
+     * @param String message
+     * @param Bool allowOutside
+     * @param String titleModal
      * @return void
      */
     error: function error(message, allowOutside, titleModal) {
@@ -14779,9 +14806,9 @@ var userSite = "Administración Web Panel";
     /**
      * Get alert error witch footer view
      *
-     * @param String $html
-     * @param Bool $txt
-     * @param String $titleModal
+     * @param String html
+     * @param Bool txt
+     * @param String titleModal
      * @return void
      */
     errorFooter: function errorFooter(html, txt, titleModal, allowOutside) {
@@ -14796,20 +14823,19 @@ var userSite = "Administración Web Panel";
 
 
     /**
-    * Get alert success  view
-    *
-    * @param String $message
-    * @param Bool $allowOutside
-    * @param String $titleModal
-    * @return void
-    */
-    success: function success(message, allowOutside, titleModal) {
+     * Get alert success view
+     *
+     * @param String title
+     * @param Bool showConfirm
+     * @param String time
+     * @return void
+     */
+    success: function success(title, showConfirm, time) {
       Swal.fire({
-        icon: "error",
-        title: titleModal,
-        text: message,
-        allowOutsideClick: allowOutside
-        //footer: '<a href="">Why do I have this issue?</a>',
+        icon: "success",
+        title: "La reservación se registró con éxito",
+        showConfirmButton: showConfirm,
+        timer: time
       });
     }
   }
@@ -15987,25 +16013,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return listBebroomsOccupation;
     }(),
     NumberFormatJS: function NumberFormatJS(value) {
-      if (parseInt(value) < 1000) {
-        return value;
-      } else {
-        var filtered_number = value.replace(/[^0-9]/gi, "");
-        var length = filtered_number.length;
-        var breakpoint = 1;
-        var formated_number = "";
-        var i;
-        for (i = 1; i <= length; i++) {
-          if (breakpoint > 3) {
-            breakpoint = 1;
-            formated_number = "." + formated_number;
-          }
-          var next_letter = i + 1;
-          formated_number = filtered_number.substring(length - i, length - (i - 1)) + formated_number;
-          breakpoint++;
-        }
-        return formated_number;
-      }
+      return this.helper.helpers.NumberFormatJS(value);
     },
     roomSeleted: function roomSeleted(event) {
       if (event.target.value == "" || event.target.value == undefined || event.target.value == null) {

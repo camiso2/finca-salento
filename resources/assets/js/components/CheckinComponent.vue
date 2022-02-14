@@ -225,13 +225,11 @@ export default {
             this.preloader = false;
             // console.log("checkin : ", response.data);
             if (response.data.success == "success") {
-              Swal.fire({
-                //position: "top-end",
-                icon: "success",
-                title: "El huésped se registró con éxito",
-                showConfirmButton: false,
-                timer: 1500,
-              });
+              this.helper.helpers.success(
+                "La reservación se registró con éxito",
+                false,
+                1500
+              );
               location.reload();
             } else {
               this.helper.helpers.error(
@@ -327,27 +325,7 @@ export default {
       }
     },
     NumberFormatJS(value) {
-      if (parseInt(value) < 1000) {
-        return value;
-      } else {
-        var filtered_number = value.replace(/[^0-9]/gi, "");
-        var length = filtered_number.length;
-        var breakpoint = 1;
-        var formated_number = "";
-        var i;
-        for (i = 1; i <= length; i++) {
-          if (breakpoint > 3) {
-            breakpoint = 1;
-            formated_number = "." + formated_number;
-          }
-          var next_letter = i + 1;
-          formated_number =
-            filtered_number.substring(length - i, length - (i - 1)) +
-            formated_number;
-          breakpoint++;
-        }
-        return formated_number;
-      }
+      return this.helper.helpers.NumberFormatJS(value);
     },
     async listCountriesAll() {
       this.preloader = true;

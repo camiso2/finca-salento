@@ -328,13 +328,11 @@ export default {
           this.preloader = false;
           console.log("correct : ", response.data);
           if (response.data.success == "success") {
-            Swal.fire({
-              //position: "top-end",
-              icon: "success",
-              title: "La habitación se registró con éxito",
-              showConfirmButton: false,
-              timer: 1500,
-            });
+            this.helper.helpers.success(
+                "La reservación se registró con éxito",
+                false,
+                1500
+              );
             location.reload();
           } else {
             this.helper.helpers.error(

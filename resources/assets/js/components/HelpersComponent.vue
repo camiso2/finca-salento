@@ -22,9 +22,38 @@ export default {
     },
 
     /**
+     * Get string number format numbers > 1000
+     *
+     * @param String value
+     * @return string
+     */
+    NumberFormatJS: function (value) {
+      if (parseInt(value) < 1000) {
+        return value;
+      }
+      var filtered_number = value.replace(/[^0-9]/gi, "");
+      var length = filtered_number.length;
+      var breakpoint = 1;
+      var formated_number = "";
+      var i;
+      for (i = 1; i <= length; i++) {
+        if (breakpoint > 3) {
+          breakpoint = 1;
+          formated_number = "." + formated_number;
+        }
+        var next_letter = i + 1;
+        formated_number =
+          filtered_number.substring(length - i, length - (i - 1)) +
+          formated_number;
+        breakpoint++;
+      }
+      return formated_number;
+    },
+
+    /**
      * Get all dat form Data Object
      *
-     * @param String $obj
+     * @param String obj
      * @return object
      */
     toFormData(obj) {
@@ -38,9 +67,9 @@ export default {
     /**
      * Get alert error  view
      *
-     * @param String $message
-     * @param Bool $allowOutside
-     * @param String $titleModal
+     * @param String message
+     * @param Bool allowOutside
+     * @param String titleModal
      * @return void
      */
     error(message, allowOutside, titleModal) {
@@ -55,36 +84,35 @@ export default {
     /**
      * Get alert error witch footer view
      *
-     * @param String $html
-     * @param Bool $txt
-     * @param String $titleModal
+     * @param String html
+     * @param Bool txt
+     * @param String titleModal
      * @return void
      */
-    errorFooter(html, txt, titleModal,allowOutside,) {
-     Swal.fire({
-          icon: "error",
-          title: titleModal,
-          text: txt,
-          allowOutsideClick: allowOutside,
-          footer:html,
-        });
-    },
-
-     /**
-     * Get alert success  view
-     *
-     * @param String $message
-     * @param Bool $allowOutside
-     * @param String $titleModal
-     * @return void
-     */
-    success(message, allowOutside, titleModal) {
+    errorFooter(html, txt, titleModal, allowOutside) {
       Swal.fire({
         icon: "error",
         title: titleModal,
-        text: message,
+        text: txt,
         allowOutsideClick: allowOutside,
-        //footer: '<a href="">Why do I have this issue?</a>',
+        footer: html,
+      });
+    },
+
+    /**
+     * Get alert success view
+     *
+     * @param String title
+     * @param Bool showConfirm
+     * @param String time
+     * @return void
+     */
+    success(title, showConfirm, time) {
+      Swal.fire({
+        icon: "success",
+        title: "La reservación se registró con éxito",
+        showConfirmButton: showConfirm,
+        timer: time,
       });
     },
   },
