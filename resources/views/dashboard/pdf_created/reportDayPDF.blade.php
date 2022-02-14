@@ -242,6 +242,8 @@
         <font size="1">© 2022 AppTlax (innova). todos los derechos Reservados</font>
     </div>
 
+
+
 </body>
 
 </html>

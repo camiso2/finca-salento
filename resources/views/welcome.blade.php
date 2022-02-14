@@ -11,6 +11,8 @@
             <h1><i class="glyphicon glyphicon-leaf" aria-hidden="true"></i>ECOHOTEL El Rosario</h1>
             <a href="/">
                 PARA LOS AMANTES DE LA <span>NATURALEZA</span>
+
+                <div id="google_translate_element"></div>
             </a>
         </div>
         <div class="appointment">
