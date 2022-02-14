@@ -158,7 +158,7 @@ export default {
         debroom_id: this.debroom_id,
       };
       // convert el array a FormData
-        var formData = this.helper.helpers.toFormData(data);
+      var formData = this.helper.helpers.toFormData(data);
       axios
         .post("/viewInvoice", formData)
         .then((response) => {
@@ -236,7 +236,7 @@ export default {
           );
         });
     },
-   NumberFormatJS(value) {
+    NumberFormatJS(value) {
       return this.helper.helpers.NumberFormatJS(value);
     },
     roomSeleted(event) {
