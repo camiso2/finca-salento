@@ -1,10 +1,10 @@
 
 
 <script>
-const serverSrc = "www.baidu.com";
-const token = "12345678";
+const serverSrc = "https://elrosario-salento.com/";
+const token = "null";
 const hasEnter = false;
-const userSite = "Islas Diaoyu de China";
+const userSite = "Administración Web Panel";
 export default {
   userSite,
   token,
@@ -49,8 +49,25 @@ export default {
         title: titleModal,
         text: message,
         allowOutsideClick: allowOutside,
-        //footer: '<a href="">Why do I have this issue?</a>',
       });
+    },
+
+    /**
+     * Get alert error witch footer view
+     *
+     * @param String $html
+     * @param Bool $txt
+     * @param String $titleModal
+     * @return void
+     */
+    errorFooter(html, txt, titleModal,allowOutside,) {
+     Swal.fire({
+          icon: "error",
+          title: titleModal,
+          text: txt,
+          allowOutsideClick: allowOutside,
+          footer:html,
+        });
     },
 
      /**
