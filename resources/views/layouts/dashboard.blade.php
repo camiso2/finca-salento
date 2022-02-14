@@ -38,6 +38,7 @@
 
 
 
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
@@ -63,7 +64,7 @@
     <script>
         $(document).ready(function()
         {
-           // $(".bs-report-modal-lg").modal("show");
+            $(".bs-bebrooms-modal-lg").modal("show");
         });
     </script>
     @include('dashboard.sections.modal_invoice')

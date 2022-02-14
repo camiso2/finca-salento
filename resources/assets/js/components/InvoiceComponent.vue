@@ -1,47 +1,25 @@
 <template>
   <div>
     <preloader-component v-show="preloader" />
-    <form
-      class="form-horizontal form-label-left input_mask"
-      method="POST"
-      role="form"
-      @submit.prevent="invoiceSubmit"
-    >
+    <form class="form-horizontal form-label-left input_mask" method="POST" role="form" @submit.prevent="invoiceSubmit">
       <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
         <link rel="stylesheet" />
         <h5>
           <i class="fa fa-calculator fa-esp" aria-hidden="true"></i>Seleccione
           la habitación a la que le desea facturar.
         </h5>
-        <select
-          v-model="selectedBedroom"
-          @change="roomSeleted($event)"
-          class="form-control"
-          required="true"
-        >
+        <select v-model="selectedBedroom" @change="roomSeleted($event)" class="form-control" required="true">
           <option value="">
             &#xf236; &nbsp;&nbsp;Seleccione Habitacion para Facturar
           </option>
-          <option
-            v-for="bedroomCode in bedrooms"
-            :value="bedroomCode.codeRoom"
-            :key="bedroomCode.id"
-          >
+          <option v-for="bedroomCode in bedrooms" :value="bedroomCode.codeRoom" :key="bedroomCode.id">
             {{ bedroomCode.codeRoom }}
           </option>
         </select>
       </div>
     </form>
     <transition name="fade">
-      <form
-        class="form-horizontal form-label-left input_mask"
-        method="POST"
-        role="form"
-        action="/invoicePDF"
-        target="_blank"
-        v-if="showButtonGenerateInvoice"
-        id="formReceipt"
-      >
+      <form class="form-horizontal form-label-left input_mask" method="POST" role="form" action="/invoicePDF" target="_blank" v-if="showButtonGenerateInvoice" id="formReceipt">
         <input type="hidden" v-model="invoiceBebroom_id" />
         <input type="hidden" name="_token" :value="csrf" />
         <input type="hidden" name="debroom_id" :value="debroom_id" />
@@ -49,29 +27,12 @@
 
         <div v-if="disscount">
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input
-              type="number"
-              v-model="disscountClient"
-              class="form-control has-feedback-left"
-              placeholder="descuento del cliente"
-              name="disscountClient"
-            />
-            <span
-              class="fa fa-dollar form-control-feedback left"
-              aria-hidden="true"
-            ></span>
+            <input type="number" v-model="disscountClient" class="form-control has-feedback-left" placeholder="descuento del cliente" name="disscountClient" />
+            <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
           </div>
 
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input
-              v-model="observations"
-              id=""
-              class="form-control text-ar"
-              type="text"
-              maxlength="100"
-              placeholder="porque? "
-              name="observations"
-            />
+            <input v-model="observations" id="" class="form-control text-ar" type="text" maxlength="100" placeholder="porque? " name="observations" />
           </div>
         </div>
         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
@@ -79,13 +40,8 @@
           Reliazar Descuento al Cliente !
         </div>
         <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-          <button
-            type="button"
-            class="btn btn-warning btn-block btn-lg"
-            @click="reloadData"
-          >
-            <i class="fa fa-calculator fa-esp" aria-hidden="true"></i
-            ><b>PAGAR CUENTA DEL CLIENTE</b>
+          <button type="button" class="btn btn-warning btn-block btn-lg" @click="reloadData">
+            <i class="fa fa-calculator fa-esp" aria-hidden="true"></i><b>PAGAR CUENTA DEL CLIENTE</b>
             <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
           </button>
         </div>
@@ -187,7 +143,7 @@ export default {
   },
   methods: {
     reloadData() {
-    this.preloader= true;
+      this.preloader = true;
       document.getElementById("formReceipt").submit();
       location.reload();
     },

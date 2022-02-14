@@ -4,99 +4,37 @@
     <div class="x_panel">
       <div class="x_content">
         <br />
-        <form
-          class="form-horizontal form-label-left input_mask"
-          method="POST"
-          role="form"
-          enctype="multipart/form-data"
-          @submit.prevent="bookingSubmit"
-        >
+        <form class="form-horizontal form-label-left input_mask" method="POST" role="form" enctype="multipart/form-data" @submit.prevent="bookingSubmit">
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
             <h4>Desde:</h4>
-            <date-picker
-              :lang="lang"
-              v-model="timeEnter"
-              valueType="format"
-              class="input-cal"
-              placeholder="Fecha de llegada, ejemplo : 2022-01-22"
-              required="true"
-              readonly
-            ></date-picker>
+            <date-picker :lang="lang" v-model="timeEnter" valueType="format" class="input-cal" placeholder="Fecha de llegada, ejemplo : 2022-01-22" required="true" readonly></date-picker>
           </div>
           <div div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
             <h4>Hasta:</h4>
-            <date-picker
-              v-model="timeGetout"
-              valueType="format"
-              class="input-cal"
-              placeholder="Fecha de salida, ejemplo : 2022-09-22"
-            ></date-picker>
+            <date-picker v-model="timeGetout" valueType="format" class="input-cal" placeholder="Fecha de salida, ejemplo : 2022-09-22"></date-picker>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input
-              type="text"
-              v-model="name"
-              class="form-control has-feedback-left"
-              placeholder="Ingresar nombre del cliente"
-              required="true"
-            />
-            <span
-              class="fa fa-user form-control-feedback left"
-              aria-hidden="true"
-            ></span>
+            <input type="text" v-model="name" class="form-control has-feedback-left" placeholder="Ingresar nombre del cliente" required="true" />
+            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
           </div>
 
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input
-              type="number"
-              v-model="phone"
-              class="form-control has-feedback-left"
-              placeholder="Ingresar teléfono del cliente"
-              required="true"
-            />
-            <span
-              class="fa fa-phone form-control-feedback left"
-              aria-hidden="true"
-            ></span>
+            <input type="number" v-model="phone" class="form-control has-feedback-left" placeholder="Ingresar teléfono del cliente" required="true" />
+            <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input
-              type="email"
-              v-model="email"
-              class="form-control has-feedback-left"
-              placeholder="Ingresar E-mail del cliente"
-              required="true"
-            />
-            <span
-              class="fa fa-envelope form-control-feedback left"
-              aria-hidden="true"
-            ></span>
+            <input type="email" v-model="email" class="form-control has-feedback-left" placeholder="Ingresar E-mail del cliente" required="true" />
+            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input
-              type="number"
-              v-model="advance"
-              class="form-control has-feedback-left"
-              placeholder="Ingresar anticipo del cliente"
-              required="true"
-            />
-            <span
-              class="fa fa-dollar form-control-feedback left"
-              aria-hidden="true"
-            ></span>
+            <input type="number" v-model="advance" class="form-control has-feedback-left" placeholder="Ingresar anticipo del cliente" required="true" />
+            <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
           </div>
 
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <link
-              href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"
-              rel="stylesheet"
-            />
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" />
 
-            <select
-              v-model="personsQuantity"
-              class="form-control"
-              required="true"
-            >
+            <select v-model="personsQuantity" class="form-control" required="true">
               <option value="">
                 &#xf0c0; |&nbsp;&nbsp;Seleccione cantidad de personas
               </option>
@@ -108,15 +46,7 @@
 
           <div class="form-group">
             <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0">
-              <textarea
-                v-model="observations"
-                id=""
-                class="form-control text-ar"
-                type="text"
-                maxlength="100"
-                required="true"
-                placeholder="Observaciones"
-              >
+              <textarea v-model="observations" id="" class="form-control text-ar" type="text" maxlength="100" required="true" placeholder="Observaciones">
               </textarea>
             </div>
           </div>
@@ -222,7 +152,7 @@ export default {
             this.preloader = false;
             console.log("booking : ", response.data);
             if (response.data.success == "success") {
-                 Swal.fire({
+              Swal.fire({
                 //position: "top-end",
                 icon: "success",
                 title: "La reservación se registró con éxito",

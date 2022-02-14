@@ -2,60 +2,26 @@
   <div>
     <preloader-component v-show="preloader" />
 
-    <form
-      class="form-horizontal form-label-left input_mask"
-      method="POST"
-      role="form"
-      enctype="multipart/form-data"
-      @submit.prevent="OrderSubmit"
-    >
+    <form class="form-horizontal form-label-left input_mask" method="POST" role="form" enctype="multipart/form-data" @submit.prevent="OrderSubmit">
       <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
         <link rel="stylesheet" />
 
-        <select
-          v-model="selectedBedroom"
-          @change="roomSeleted($event)"
-          class="form-control"
-          required="true"
-        >
+        <select v-model="selectedBedroom" @change="roomSeleted($event)" class="form-control" required="true">
           <option value="">&#xf236; &nbsp;&nbsp;Habitacion para Venta</option>
-          <option
-            v-for="bedroomCode in bedrooms"
-            :value="bedroomCode.codeRoom"
-            :key="bedroomCode.id"
-          >
+          <option v-for="bedroomCode in bedrooms" :value="bedroomCode.codeRoom" :key="bedroomCode.id">
             {{ bedroomCode.codeRoom }}
           </option>
         </select>
       </div>
 
       <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-        <input
-          type="number"
-          v-model="valueOrder"
-          class="form-control has-feedback-left"
-          placeholder="Valor del pedido"
-          maxlength="8"
-          minlength="3"
-          required="true"
-        />
-        <span
-          class="fa fa-dollar form-control-feedback left"
-          aria-hidden="true"
-        ></span>
+        <input type="number" v-model="valueOrder" class="form-control has-feedback-left" placeholder="Valor del pedido" maxlength="8" minlength="3" required="true" />
+        <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
       </div>
 
       <div class="form-group">
         <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0">
-          <textarea
-            v-model="order"
-            id=""
-            class="form-control text-ar"
-            type="text"
-            maxlength="100"
-            required="true"
-            placeholder="Escriba el Pedido"
-          >
+          <textarea v-model="order" id="" class="form-control text-ar" type="text" maxlength="100" required="true" placeholder="Escriba el Pedido">
           </textarea>
         </div>
       </div>

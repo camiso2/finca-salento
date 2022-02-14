@@ -71,7 +71,7 @@
 
 
 var bind = __webpack_require__(8);
-var isBuffer = __webpack_require__(19);
+var isBuffer = __webpack_require__(24);
 
 /*global toString:true*/
 
@@ -408,7 +408,7 @@ module.exports = g;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(21);
+var normalizeHeaderName = __webpack_require__(26);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -502,10 +502,92 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -614,290 +696,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-if (false) {
-  module.exports = require('./vue.common.prod.js')
-} else {
-  module.exports = __webpack_require__(14)
-}
-
-
-/***/ }),
 /* 5 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1125,6 +924,207 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+if (false) {
+  module.exports = require('./vue.common.prod.js')
+} else {
+  module.exports = __webpack_require__(14)
+}
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1150,10 +1150,10 @@ module.exports = function bind(fn, thisArg) {
 
 
 var utils = __webpack_require__(0);
-var settle = __webpack_require__(22);
-var buildURL = __webpack_require__(24);
-var parseHeaders = __webpack_require__(25);
-var isURLSameOrigin = __webpack_require__(26);
+var settle = __webpack_require__(27);
+var buildURL = __webpack_require__(29);
+var parseHeaders = __webpack_require__(30);
+var isURLSameOrigin = __webpack_require__(31);
 var createError = __webpack_require__(10);
 
 module.exports = function xhrAdapter(config) {
@@ -1234,7 +1234,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(27);
+      var cookies = __webpack_require__(32);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -1318,7 +1318,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(23);
+var enhanceError = __webpack_require__(28);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -1378,7 +1378,7 @@ module.exports = Cancel;
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(18);
+module.exports = __webpack_require__(23);
 
 /***/ }),
 /* 14 */
@@ -13657,7 +13657,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(7)))
 
 /***/ }),
 /* 17 */
@@ -13696,12 +13696,158 @@ module.exports = function listToStyles (parentId, list) {
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(19)
+}
+var normalizeComponent = __webpack_require__(4)
+/* script */
+var __vue_script__ = __webpack_require__(21)
+/* template */
+var __vue_template__ = __webpack_require__(22)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-332cd81e"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/PreloaderComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-332cd81e", Component.options)
+  } else {
+    hotAPI.reload("data-v-332cd81e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(20);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("5dc50d08", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-332cd81e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PreloaderComponent.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-332cd81e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PreloaderComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "/*preload*/\n.load[data-v-332cd81e] {\n  display: block;\n  background: #eceaea;\n  color: white;\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 10000;\n  opacity: 0.75;\n  filter: alpha(opacity=75);\n  /* For IE8 and earlier */\n  border-radius: 8px;\n}\n.load p[data-v-332cd81e] {\n  display: block;\n  width: 100px;\n  height: 30px;\n  font-family: \"Poppins\", sans-serif;\n  font-size: 20px;\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  margin: auto;\n  padding-top: 100px;\n  color: #4897e0;\n}\n.load img[data-v-332cd81e] {\n  display: block;\n  width: 190px;\n  height: 190px;\n  font-family: \"Poppins\", sans-serif;\n  font-size: 30px;\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  margin: auto;\n  border-radius: 50%;\n}\n\n/*preload*/\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "preloader",
+  mounted: function mounted() {
+    console.log("Component mounted preloader.");
+  }
+});
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("span", { staticClass: "load" }, [
+        _c("img", { attrs: { src: "/images/preloads/preloader_9.gif" } }),
+        _vm._v(" "),
+        _c("p", [_vm._v("Cargando...")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-332cd81e", module.exports)
+  }
+}
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(8);
-var Axios = __webpack_require__(20);
+var Axios = __webpack_require__(25);
 var defaults = __webpack_require__(2);
 
 /**
@@ -13736,14 +13882,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(12);
-axios.CancelToken = __webpack_require__(33);
+axios.CancelToken = __webpack_require__(38);
 axios.isCancel = __webpack_require__(11);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(34);
+axios.spread = __webpack_require__(39);
 
 module.exports = axios;
 
@@ -13752,7 +13898,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 19 */
+/* 24 */
 /***/ (function(module, exports) {
 
 /*!
@@ -13769,7 +13915,7 @@ module.exports = function isBuffer (obj) {
 
 
 /***/ }),
-/* 20 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13777,8 +13923,8 @@ module.exports = function isBuffer (obj) {
 
 var defaults = __webpack_require__(2);
 var utils = __webpack_require__(0);
-var InterceptorManager = __webpack_require__(28);
-var dispatchRequest = __webpack_require__(29);
+var InterceptorManager = __webpack_require__(33);
+var dispatchRequest = __webpack_require__(34);
 
 /**
  * Create a new instance of Axios
@@ -13855,7 +14001,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 21 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13874,7 +14020,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 22 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13907,7 +14053,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 23 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13935,7 +14081,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 24 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14008,7 +14154,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 25 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14068,7 +14214,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 26 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14143,7 +14289,7 @@ module.exports = (
 
 
 /***/ }),
-/* 27 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14203,7 +14349,7 @@ module.exports = (
 
 
 /***/ }),
-/* 28 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14262,18 +14408,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 29 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var transformData = __webpack_require__(30);
+var transformData = __webpack_require__(35);
 var isCancel = __webpack_require__(11);
 var defaults = __webpack_require__(2);
-var isAbsoluteURL = __webpack_require__(31);
-var combineURLs = __webpack_require__(32);
+var isAbsoluteURL = __webpack_require__(36);
+var combineURLs = __webpack_require__(37);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -14355,7 +14501,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 30 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14382,7 +14528,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 31 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14403,7 +14549,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 32 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14424,7 +14570,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 33 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14488,7 +14634,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 34 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14520,152 +14666,6 @@ module.exports = function spread(callback) {
   };
 };
 
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(36)
-}
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(38)
-/* template */
-var __vue_template__ = __webpack_require__(39)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-332cd81e"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/PreloaderComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-332cd81e", Component.options)
-  } else {
-    hotAPI.reload("data-v-332cd81e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(37);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(7)("5dc50d08", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-332cd81e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PreloaderComponent.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-332cd81e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PreloaderComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(6)(false);
-// imports
-
-
-// module
-exports.push([module.i, "/*preload*/\n.load[data-v-332cd81e] {\n  display: block;\n  background: #eceaea;\n  color: white;\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 10000;\n  opacity: 0.75;\n  filter: alpha(opacity=75);\n  /* For IE8 and earlier */\n  border-radius: 8px;\n}\n.load p[data-v-332cd81e] {\n  display: block;\n  width: 100px;\n  height: 30px;\n  font-family: \"Poppins\", sans-serif;\n  font-size: 20px;\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  margin: auto;\n  padding-top: 100px;\n  color: #4897e0;\n}\n.load img[data-v-332cd81e] {\n  display: block;\n  width: 190px;\n  height: 190px;\n  font-family: \"Poppins\", sans-serif;\n  font-size: 30px;\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  margin: auto;\n  border-radius: 50%;\n}\n\n/*preload*/\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "preloader",
-  mounted: function mounted() {
-    console.log("Component mounted preloader.");
-  }
-});
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("span", { staticClass: "load" }, [
-        _c("img", { attrs: { src: "/images/preloads/preloader_9.gif" } }),
-        _vm._v(" "),
-        _c("p", [_vm._v("Cargando...")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-332cd81e", module.exports)
-  }
-}
 
 /***/ }),
 /* 40 */,
@@ -14708,7 +14708,7 @@ module.exports = __webpack_require__(69);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -14721,7 +14721,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var axios = __webpack_require__(13).default;
 
-window.Vue = __webpack_require__(4);
+window.Vue = __webpack_require__(6);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -14744,7 +14744,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(71)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(73)
 /* template */
@@ -14797,7 +14797,7 @@ var content = __webpack_require__(72);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(7)("7d1c819f", content, false, {});
+var update = __webpack_require__(5)("7d1c819f", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -14816,7 +14816,7 @@ if(false) {
 /* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(false);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -14834,242 +14834,8 @@ exports.push([module.i, "\n.form-control[data-v-02d0857b] {\n  color: #788c9e;\n
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PreloaderComponent__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PreloaderComponent__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__PreloaderComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__PreloaderComponent__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -15556,1499 +15322,1024 @@ var render = function() {
         ]
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "_x_panel" }, [
+      _c("div", { staticClass: "x_panel" }, [
         _c("div", { staticClass: "x_content" }, [
+          _c("br"),
+          _vm._v(" "),
           _c(
-            "div",
+            "form",
             {
-              attrs: { role: "tabpanel", "data-example-id": "togglable-tabs" }
+              attrs: {
+                id: "#bedroom",
+                method: "POST",
+                role: "form",
+                enctype: "multipart/form-data"
+              },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.bedRoomSubmit.apply(null, arguments)
+                }
+              }
             },
             [
-              _c(
-                "ul",
-                {
-                  staticClass: "nav nav-tabs bar_tabs right",
-                  attrs: { id: "myTab1", role: "tablist" }
-                },
-                [
-                  _c(
-                    "li",
-                    { staticClass: "active", attrs: { role: "presentation" } },
-                    [
-                      _c(
-                        "a",
+              _c("div", { staticClass: "content tab" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-md-6 col-sm-6 col-xs-12 form-group has-feedback"
+                  },
+                  [
+                    _c("input", {
+                      directives: [
                         {
-                          attrs: {
-                            href: "#tab_content11",
-                            id: "home-tabb",
-                            role: "tab",
-                            "data-toggle": "tab",
-                            "aria-controls": "home",
-                            "aria-expanded": "true"
-                          }
-                        },
-                        [_vm._v(_vm._s(_vm.title))]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _vm._m(0)
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "tab-content", attrs: { id: "myTabContent2" } },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "tab-pane fade active in",
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.name,
+                          expression: "name"
+                        }
+                      ],
+                      staticClass: "form-control has-feedback-left",
                       attrs: {
-                        role: "tabpanel",
-                        id: "tab_content11",
-                        "aria-labelledby": "home-tab"
+                        id: "name",
+                        name: "nombre",
+                        type: "text",
+                        placeholder: "Ingrese el nombre de su habitación",
+                        required: ""
+                      },
+                      domProps: { value: _vm.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.name = $event.target.value
+                        }
                       }
-                    },
-                    [
-                      _c("div", { staticClass: "catalog" }, [
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "fa fa-home form-control-feedback left",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-md-6 col-sm-6 col-xs-12 form-group   has-feedback  "
+                  },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.dayRoomCost,
+                          expression: "dayRoomCost"
+                        }
+                      ],
+                      staticClass: "form-control has-feedback-left",
+                      attrs: {
+                        id: "dayRoomCost",
+                        name: "dayRoomCost",
+                        type: "number",
+                        placeholder: "Ingrese el costo por dia habitación $",
+                        required: ""
+                      },
+                      domProps: { value: _vm.dayRoomCost },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.dayRoomCost = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("span", {
+                      staticClass: "fa fa-dollar form-control-feedback left",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-md-6 col-sm-6 col-xs-12  form-group  has-feedback   "
+                  },
+                  [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.typeBedrooms,
+                            expression: "typeBedrooms"
+                          }
+                        ],
+                        staticClass: "form-control has-feedback",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.typeBedrooms = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { disabled: "", value: "" } }, [
+                          _vm._v(
+                            "\n                 | Seleccionar tipo de habitación\n              "
+                          )
+                        ]),
+                        _vm._v(" "),
                         _c(
-                          "div",
-                          { staticClass: "tabs", attrs: { id: "tabs" } },
+                          "option",
+                          { attrs: { value: "habitacion sencilla" } },
                           [
-                            _c(
-                              "form",
-                              {
+                            _vm._v(
+                              "\n                Habitación Sencilla\n              "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { attrs: { value: "habitacion matrimonial" } },
+                          [
+                            _vm._v(
+                              "\n                Habitación Matrimonial\n              "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "habitacion doble" } }, [
+                          _vm._v(
+                            "\n                Habitación Doble\n              "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { attrs: { value: "habitacion tipo estudio" } },
+                          [
+                            _vm._v(
+                              "\n                Habitación Tipo Estudio\n              "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { attrs: { value: "habitacion tipo suite" } },
+                          [
+                            _vm._v(
+                              "\n                Habitación Tipo Suite\n              "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { attrs: { value: "habitacion comunicantes" } },
+                          [
+                            _vm._v(
+                              "\n                Habitación Comunicantes\n              "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { attrs: { value: "habitacion triple" } },
+                          [
+                            _vm._v(
+                              "\n                Habitación Triple\n              "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { attrs: { value: "habitacion cuadruple" } },
+                          [
+                            _vm._v(
+                              "\n                Habitación Cuadruple\n              "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { attrs: { value: "habitacion familiar" } },
+                          [
+                            _vm._v(
+                              "\n                Habitación Familiar\n              "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { attrs: { value: "habitacion compartida" } },
+                          [
+                            _vm._v(
+                              "\n                Habitación Compartida\n              "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "cabanas" } }, [
+                          _vm._v("Cabanas")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "apartamento" } }, [
+                          _vm._v("Apartamento")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "bungalow" } }, [
+                          _vm._v("Bungalow")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "chalet" } }, [
+                          _vm._v("Chalet")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Tienda" } }, [
+                          _vm._v("Tienda")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "Dormitory-room" } }, [
+                          _vm._v("Dormitory-Room")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "apartamento" } }, [
+                          _vm._v("Apartamento")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "casa-movil" } }, [
+                          _vm._v("Casa Móvil")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "tienda" } }, [
+                          _vm._v("Tienda")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "casa rural" } }, [
+                          _vm._v("Casa Rural")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "otra" } }, [
+                          _vm._v("Otra")
+                        ])
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      " col-md-6 col-sm-6 col-xs-12 form-group has-feedback "
+                  },
+                  [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.bedQuantity,
+                            expression: "bedQuantity"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.bedQuantity = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "" } }, [
+                          _vm._v(
+                            "\n                 | Seleccione cantidad de camas\n              "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.beds, function(n) {
+                          return _c(
+                            "option",
+                            { key: n, domProps: { value: n } },
+                            [
+                              _vm._v(
+                                "\n                " +
+                                  _vm._s(n) +
+                                  "\n              "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "fo-top" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", {
+                      staticClass: "col-sm-2 control-label",
+                      attrs: { for: "focusedinput" }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-12 ctl" }, [
+                      _c("table", { staticClass: "table table-bordered" }, [
+                        _vm._m(0),
+                        _vm._v(" "),
+                        _c("tbody", [
+                          _c("tr", [
+                            _c("td", [_vm._v("La habitación tiene radio ?")]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.rradio,
+                                    expression: "rradio"
+                                  }
+                                ],
                                 attrs: {
-                                  id: "#bedroom",
-                                  method: "POST",
-                                  role: "form",
-                                  enctype: "multipart/form-data"
+                                  type: "radio",
+                                  name: "rradio",
+                                  value: "si",
+                                  required: "true"
                                 },
+                                domProps: { checked: _vm._q(_vm.rradio, "si") },
                                 on: {
-                                  submit: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.bedRoomSubmit.apply(
-                                      null,
-                                      arguments
-                                    )
+                                  change: function($event) {
+                                    _vm.rradio = "si"
                                   }
                                 }
-                              },
-                              [
-                                _c("div", { staticClass: "content tab" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "\n                        col-md-6 col-sm-6 col-xs-12\n                        form-group\n                        has-feedback\n                      "
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.name,
-                                            expression: "name"
-                                          }
-                                        ],
-                                        staticClass:
-                                          "form-control has-feedback-left",
-                                        attrs: {
-                                          id: "name",
-                                          name: "nombre",
-                                          type: "text",
-                                          placeholder:
-                                            "Ingrese el nombre de su habitación",
-                                          required: ""
-                                        },
-                                        domProps: { value: _vm.name },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.name = $event.target.value
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("span", {
-                                        staticClass:
-                                          "fa fa-home form-control-feedback left",
-                                        attrs: { "aria-hidden": "true" }
-                                      })
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "\n                        col-md-6 col-sm-6 col-xs-12\n                        form-group\n                        has-feedback\n                      "
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.dayRoomCost,
-                                            expression: "dayRoomCost"
-                                          }
-                                        ],
-                                        staticClass:
-                                          "form-control has-feedback-left",
-                                        attrs: {
-                                          id: "dayRoomCost",
-                                          name: "dayRoomCost",
-                                          type: "number",
-                                          placeholder:
-                                            "Ingrese el costo por dia habitación $",
-                                          required: ""
-                                        },
-                                        domProps: { value: _vm.dayRoomCost },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.dayRoomCost =
-                                              $event.target.value
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("span", {
-                                        staticClass:
-                                          "fa fa-dollar form-control-feedback left",
-                                        attrs: { "aria-hidden": "true" }
-                                      })
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "\n                        col-md-6 col-sm-6 col-xs-12\n                        form-group\n                        has-feedback\n                      "
-                                    },
-                                    [
-                                      _c(
-                                        "select",
-                                        {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: _vm.typeBedrooms,
-                                              expression: "typeBedrooms"
-                                            }
-                                          ],
-                                          staticClass:
-                                            "form-control has-feedback",
-                                          on: {
-                                            change: function($event) {
-                                              var $$selectedVal = Array.prototype.filter
-                                                .call(
-                                                  $event.target.options,
-                                                  function(o) {
-                                                    return o.selected
-                                                  }
-                                                )
-                                                .map(function(o) {
-                                                  var val =
-                                                    "_value" in o
-                                                      ? o._value
-                                                      : o.value
-                                                  return val
-                                                })
-                                              _vm.typeBedrooms = $event.target
-                                                .multiple
-                                                ? $$selectedVal
-                                                : $$selectedVal[0]
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: { disabled: "", value: "" }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                           | Seleccionar tipo de habitación\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: {
-                                                value: "habitacion sencilla"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          HABITACIÓN SENCILLA\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: {
-                                                value: "habitacion matrimonial"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          HABITACIÓN MATRIMONIAL\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: {
-                                                value: "habitacion doble"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          HABITACIÓN DOBLE\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: {
-                                                value: "habitacion tipo estudio"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          HABITACIÓN TIPO ESTUDIO\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: {
-                                                value: "habitacion tipo suite"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          HABITACIÓN TIPO SUITE\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: {
-                                                value: "habitacion comunicantes"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          HABITACIÓN COMUNICANTE\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: {
-                                                value: "habitacion triple"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          HABITACIÓN TRIPLE\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: {
-                                                value: "habitacion cuadruple"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          HABITACIÓN CUADRUPLE\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: {
-                                                value: "habitacion familiar"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          HABITACIÓN FAMILIAR\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: {
-                                                value: "habitacion compartida"
-                                              }
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          HABITACIÓN COMPARTIDA\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "cabanas" } },
-                                            [_vm._v("CABAÑAS")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "apartamento" } },
-                                            [_vm._v("APARTAMENTO")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "bungalow" } },
-                                            [_vm._v("BUNGALOW")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "chalet" } },
-                                            [_vm._v("CHALET")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "Tienda" } },
-                                            [_vm._v("TIENDA")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            {
-                                              attrs: { value: "Dormitory-room" }
-                                            },
-                                            [_vm._v("DORMITORY-ROOM")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "apartamento" } },
-                                            [_vm._v("APARTAMENTO")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "casa-movil" } },
-                                            [_vm._v("CASA MÓVIL")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "tienda" } },
-                                            [_vm._v("TIENDA")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "casa rural" } },
-                                            [_vm._v("CASA RURAL")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "otra" } },
-                                            [_vm._v("OTRA")]
-                                          )
-                                        ]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "\n                        col-md-6 col-sm-6 col-xs-12\n                        form-group\n                        has-feedback\n                      "
-                                    },
-                                    [
-                                      _c(
-                                        "select",
-                                        {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: _vm.bedQuantity,
-                                              expression: "bedQuantity"
-                                            }
-                                          ],
-                                          staticClass: "form-control",
-                                          on: {
-                                            change: function($event) {
-                                              var $$selectedVal = Array.prototype.filter
-                                                .call(
-                                                  $event.target.options,
-                                                  function(o) {
-                                                    return o.selected
-                                                  }
-                                                )
-                                                .map(function(o) {
-                                                  var val =
-                                                    "_value" in o
-                                                      ? o._value
-                                                      : o.value
-                                                  return val
-                                                })
-                                              _vm.bedQuantity = $event.target
-                                                .multiple
-                                                ? $$selectedVal
-                                                : $$selectedVal[0]
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "" } },
-                                            [
-                                              _vm._v(
-                                                "\n                           | Seleccione cantidad de camas\n                        "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _vm._l(_vm.beds, function(n) {
-                                            return _c(
-                                              "option",
-                                              {
-                                                key: n,
-                                                domProps: { value: n }
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "\n                          " +
-                                                    _vm._s(n) +
-                                                    "\n                        "
-                                                )
-                                              ]
-                                            )
-                                          })
-                                        ],
-                                        2
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "fo-top" }, [
-                                    _c("div", { staticClass: "form-group" }, [
-                                      _c("label", {
-                                        staticClass: "col-sm-2 control-label",
-                                        attrs: { for: "focusedinput" }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "col-sm-12 ctl" },
-                                        [
-                                          _c(
-                                            "table",
-                                            {
-                                              staticClass:
-                                                "table table-bordered"
-                                            },
-                                            [
-                                              _vm._m(1),
-                                              _vm._v(" "),
-                                              _c("tbody", [
-                                                _c("tr", [
-                                                  _c("td", [
-                                                    _vm._v(
-                                                      "La habitación tiene radio ?"
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value: _vm.rradio,
-                                                            expression: "rradio"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "rradio",
-                                                          value: "si",
-                                                          required: "true"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.rradio,
-                                                            "si"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.rradio = "si"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value: _vm.rradio,
-                                                            expression: "rradio"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "rradio",
-                                                          required: "true",
-                                                          value: "no",
-                                                          lass: "flat"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.rradio,
-                                                            "no"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.rradio = "no"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c("td", [
-                                                    _vm._v(
-                                                      "La habitación tiene televisión ?"
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value: _vm.tv,
-                                                            expression: "tv"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "tv",
-                                                          value: "si",
-                                                          required: "true"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.tv,
-                                                            "si"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.tv = "si"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value: _vm.tv,
-                                                            expression: "tv"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "tv",
-                                                          required: "true",
-                                                          value: "no"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.tv,
-                                                            "no"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.tv = "no"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c("td", [
-                                                    _vm._v(
-                                                      "La habitación tiene ventana ?"
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value:
-                                                              _vm.roomWindow,
-                                                            expression:
-                                                              "roomWindow"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "roomWindow",
-                                                          value: "si",
-                                                          required: "true"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.roomWindow,
-                                                            "si"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.roomWindow =
-                                                              "si"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value:
-                                                              _vm.roomWindow,
-                                                            expression:
-                                                              "roomWindow"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "roomWindow",
-                                                          required: "true",
-                                                          value: "no"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.roomWindow,
-                                                            "no"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.roomWindow =
-                                                              "no"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c("td", [
-                                                    _vm._v(
-                                                      "La habitación tiene baño privado ?"
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value:
-                                                              _vm.privateBathroom,
-                                                            expression:
-                                                              "privateBathroom"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name:
-                                                            "privateBathroom",
-                                                          value: "si",
-                                                          required: "true"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.privateBathroom,
-                                                            "si"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.privateBathroom =
-                                                              "si"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value:
-                                                              _vm.privateBathroom,
-                                                            expression:
-                                                              "privateBathroom"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name:
-                                                            "privateBathroom",
-                                                          required: "true",
-                                                          value: "no"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.privateBathroom,
-                                                            "no"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.privateBathroom =
-                                                              "no"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c("td", [
-                                                    _vm._v(
-                                                      "\n                                  La habitación tiene mobiliario basico ?\n                                "
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value:
-                                                              _vm.furniture,
-                                                            expression:
-                                                              "furniture"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "furniture",
-                                                          value: "si",
-                                                          required: "true"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.furniture,
-                                                            "si"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.furniture = "si"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value:
-                                                              _vm.furniture,
-                                                            expression:
-                                                              "furniture"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "furniture",
-                                                          required: "true",
-                                                          value: "no"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.furniture,
-                                                            "no"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.furniture = "no"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c("td", [
-                                                    _vm._v(
-                                                      "\n                                  La habitación tiene servicio de internet ?\n                                "
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value: _vm.internet,
-                                                            expression:
-                                                              "internet"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "internet",
-                                                          value: "si",
-                                                          required: "true"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.internet,
-                                                            "si"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.internet = "si"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value: _vm.internet,
-                                                            expression:
-                                                              "internet"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "internet",
-                                                          required: "true",
-                                                          value: "no"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.internet,
-                                                            "no"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.internet = "no"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c("td", [
-                                                    _vm._v(
-                                                      "\n                                  La habitación tiene aire acondicionado ?\n                                "
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value:
-                                                              _vm.airConditioning,
-                                                            expression:
-                                                              "airConditioning"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name:
-                                                            "airConditioning",
-                                                          value: "si",
-                                                          required: "true"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.airConditioning,
-                                                            "si"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.airConditioning =
-                                                              "si"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value:
-                                                              _vm.airConditioning,
-                                                            expression:
-                                                              "airConditioning"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name:
-                                                            "airConditioning",
-                                                          required: "true",
-                                                          value: "no"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.airConditioning,
-                                                            "no"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.airConditioning =
-                                                              "no"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c("td", [
-                                                    _vm._v(
-                                                      "\n                                  La habitación tiene servicio teléfonico ?\n                                "
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value:
-                                                              _vm.telephoneService,
-                                                            expression:
-                                                              "telephoneService"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name:
-                                                            "telephoneService",
-                                                          value: "si",
-                                                          required: "true"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.telephoneService,
-                                                            "si"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.telephoneService =
-                                                              "si"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value:
-                                                              _vm.telephoneService,
-                                                            expression:
-                                                              "telephoneService"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name:
-                                                            "telephoneService",
-                                                          required: "true",
-                                                          value: "no"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.telephoneService,
-                                                            "no"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.telephoneService =
-                                                              "no"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c("td", [
-                                                    _vm._v(
-                                                      "\n                                  La habitación tiene servicio de Nevera\n                                  (refrigerador) ?\n                                "
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value: _vm.cooling,
-                                                            expression:
-                                                              "cooling"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "cooling",
-                                                          value: "si",
-                                                          required: "true"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.cooling,
-                                                            "si"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.cooling = "si"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value: _vm.cooling,
-                                                            expression:
-                                                              "cooling"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "cooling",
-                                                          required: "true",
-                                                          value: "no"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.cooling,
-                                                            "no"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.cooling = "no"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                ]),
-                                                _vm._v(" "),
-                                                _c("tr", [
-                                                  _c("td", [
-                                                    _vm._v(
-                                                      "\n                                  La habitación tiene servicio de jacuzzi ?\n                                "
-                                                    )
-                                                  ]),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value: _vm.jacuzzi,
-                                                            expression:
-                                                              "jacuzzi"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "jacuzzi",
-                                                          required: "true",
-                                                          value: "si"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.jacuzzi,
-                                                            "si"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.jacuzzi = "si"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "td",
-                                                    {
-                                                      attrs: { id: "center-td" }
-                                                    },
-                                                    [
-                                                      _c("input", {
-                                                        directives: [
-                                                          {
-                                                            name: "model",
-                                                            rawName: "v-model",
-                                                            value: _vm.jacuzzi,
-                                                            expression:
-                                                              "jacuzzi"
-                                                          }
-                                                        ],
-                                                        attrs: {
-                                                          type: "radio",
-                                                          name: "jacuzzi",
-                                                          required: "true",
-                                                          value: "no"
-                                                        },
-                                                        domProps: {
-                                                          checked: _vm._q(
-                                                            _vm.jacuzzi,
-                                                            "no"
-                                                          )
-                                                        },
-                                                        on: {
-                                                          change: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.jacuzzi = "no"
-                                                          }
-                                                        }
-                                                      })
-                                                    ]
-                                                  )
-                                                ])
-                                              ])
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ])
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "fo-top" }, [
-                                    _c("div", { staticClass: "form-group" }, [
-                                      _c("label", {
-                                        staticClass: "col-sm-2 control-label",
-                                        attrs: { for: "focusedinput" }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "input-group" },
-                                        [
-                                          _c(
-                                            "span",
-                                            {
-                                              staticClass: "input-group-addon"
-                                            },
-                                            [_vm._v("Seleccione la imagen")]
-                                          ),
-                                          _vm._v(" "),
-                                          _vm.fileImage
-                                            ? _c("img", {
-                                                staticClass:
-                                                  "img-thumbnail mt-2",
-                                                staticStyle: { width: "50%" },
-                                                attrs: { src: _vm.previewImage }
-                                              })
-                                            : _vm._e(),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            ref: "fileupload",
-                                            staticClass: "form-control",
-                                            attrs: {
-                                              type: "file",
-                                              accept: ".jpg, .jpeg, .png, gif",
-                                              name: "imagen"
-                                            },
-                                            on: { change: _vm.onImageChanged }
-                                          }),
-                                          _vm._v(" "),
-                                          _c(
-                                            "span",
-                                            {
-                                              staticClass: "input-group-addon"
-                                            },
-                                            [_vm._v("|")]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "clearfix" })
-                                    ])
-                                  ]),
-                                  _vm._v(" "),
-                                  _vm._m(2)
-                                ])
-                              ]
-                            ),
+                              })
+                            ]),
                             _vm._v(" "),
-                            _c("br"),
-                            _c("br")
-                          ]
-                        )
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.rradio,
+                                    expression: "rradio"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "rradio",
+                                  required: "true",
+                                  value: "no",
+                                  lass: "flat"
+                                },
+                                domProps: { checked: _vm._q(_vm.rradio, "no") },
+                                on: {
+                                  change: function($event) {
+                                    _vm.rradio = "no"
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v("La habitación tiene televisión ?")
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.tv,
+                                    expression: "tv"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "tv",
+                                  value: "si",
+                                  required: "true"
+                                },
+                                domProps: { checked: _vm._q(_vm.tv, "si") },
+                                on: {
+                                  change: function($event) {
+                                    _vm.tv = "si"
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.tv,
+                                    expression: "tv"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "tv",
+                                  required: "true",
+                                  value: "no"
+                                },
+                                domProps: { checked: _vm._q(_vm.tv, "no") },
+                                on: {
+                                  change: function($event) {
+                                    _vm.tv = "no"
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [_vm._v("La habitación tiene ventana ?")]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.roomWindow,
+                                    expression: "roomWindow"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "roomWindow",
+                                  value: "si",
+                                  required: "true"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.roomWindow, "si")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.roomWindow = "si"
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.roomWindow,
+                                    expression: "roomWindow"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "roomWindow",
+                                  required: "true",
+                                  value: "no"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.roomWindow, "no")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.roomWindow = "no"
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v("La habitación tiene baño privado ?")
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.privateBathroom,
+                                    expression: "privateBathroom"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "privateBathroom",
+                                  value: "si",
+                                  required: "true"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.privateBathroom, "si")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.privateBathroom = "si"
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.privateBathroom,
+                                    expression: "privateBathroom"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "privateBathroom",
+                                  required: "true",
+                                  value: "no"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.privateBathroom, "no")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.privateBathroom = "no"
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                        La habitación tiene mobiliario basico ?\n                      "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.furniture,
+                                    expression: "furniture"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "furniture",
+                                  value: "si",
+                                  required: "true"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.furniture, "si")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.furniture = "si"
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.furniture,
+                                    expression: "furniture"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "furniture",
+                                  required: "true",
+                                  value: "no"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.furniture, "no")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.furniture = "no"
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                        La habitación tiene servicio de internet ?\n                      "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.internet,
+                                    expression: "internet"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "internet",
+                                  value: "si",
+                                  required: "true"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.internet, "si")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.internet = "si"
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.internet,
+                                    expression: "internet"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "internet",
+                                  required: "true",
+                                  value: "no"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.internet, "no")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.internet = "no"
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                        La habitación tiene aire acondicionado ?\n                      "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.airConditioning,
+                                    expression: "airConditioning"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "airConditioning",
+                                  value: "si",
+                                  required: "true"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.airConditioning, "si")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.airConditioning = "si"
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.airConditioning,
+                                    expression: "airConditioning"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "airConditioning",
+                                  required: "true",
+                                  value: "no"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.airConditioning, "no")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.airConditioning = "no"
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                        La habitación tiene servicio teléfonico ?\n                      "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.telephoneService,
+                                    expression: "telephoneService"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "telephoneService",
+                                  value: "si",
+                                  required: "true"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.telephoneService, "si")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.telephoneService = "si"
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.telephoneService,
+                                    expression: "telephoneService"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "telephoneService",
+                                  required: "true",
+                                  value: "no"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.telephoneService, "no")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.telephoneService = "no"
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                        La habitación tiene servicio de Nevera\n                        (refrigerador) ?\n                      "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.cooling,
+                                    expression: "cooling"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "cooling",
+                                  value: "si",
+                                  required: "true"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.cooling, "si")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.cooling = "si"
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.cooling,
+                                    expression: "cooling"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "cooling",
+                                  required: "true",
+                                  value: "no"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.cooling, "no")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.cooling = "no"
+                                  }
+                                }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(
+                                "\n                        La habitación tiene servicio de jacuzzi ?\n                      "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.jacuzzi,
+                                    expression: "jacuzzi"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "jacuzzi",
+                                  required: "true",
+                                  value: "si"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.jacuzzi, "si")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.jacuzzi = "si"
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { id: "center-td" } }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.jacuzzi,
+                                    expression: "jacuzzi"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "radio",
+                                  name: "jacuzzi",
+                                  required: "true",
+                                  value: "no"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.jacuzzi, "no")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.jacuzzi = "no"
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        ])
                       ])
-                    ]
-                  )
-                ]
-              )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "fo-top" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", {
+                      staticClass: "col-sm-2 control-label",
+                      attrs: { for: "focusedinput" }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group" }, [
+                      _c("span", { staticClass: "input-group-addon" }, [
+                        _vm._v("Seleccione la imagen")
+                      ]),
+                      _vm._v(" "),
+                      _vm.fileImage
+                        ? _c("img", {
+                            staticClass: "img-thumbnail mt-2",
+                            staticStyle: { width: "50%" },
+                            attrs: { src: _vm.previewImage }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("input", {
+                        ref: "fileupload",
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "file",
+                          accept: ".jpg, .jpeg, .png, gif",
+                          name: "imagen"
+                        },
+                        on: { change: _vm.onImageChanged }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "input-group-addon" }, [
+                        _vm._v("|")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "clearfix" })
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(1)
+              ])
             ]
-          )
+          ),
+          _vm._v(" "),
+          _c("br"),
+          _c("br")
         ])
       ])
     ],
@@ -17060,31 +16351,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("li", { attrs: { role: "presentation" } }, [
-      _c("a", { attrs: { href: "/dashboard/bedrooms" } }, [
-        _vm._v("Lista Hab..")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("th", { staticStyle: { width: "80%", "padding-left": "10px" } }, [
         _c("b", [_vm._v(" INGRESE LOS SIGUIENTES DATOS ")])
       ]),
       _vm._v(" "),
       _c("th", { staticStyle: { width: "10%", "text-align": "center" } }, [
-        _vm._v(
-          "\n                                SI\n                              "
-        )
+        _vm._v("\n                      SI\n                    ")
       ]),
       _vm._v(" "),
       _c("th", { staticStyle: { width: "10%", "text-align": "center" } }, [
-        _vm._v(
-          "\n                                NO\n                              "
-        )
+        _vm._v("\n                      NO\n                    ")
       ])
     ])
   },
@@ -17099,7 +16376,7 @@ var staticRenderFns = [
           attrs: { for: "focusedinput" }
         }),
         _vm._v(
-          "\n                        (.JPG, .PNG .GIF ->se recomienda que la imagen sea\n                        tomada de forma horizontal, tamaño maximo 10MP)\n                      "
+          "\n              (.JPG, .PNG .GIF ->se recomienda que la imagen sea\n              tomada de forma horizontal, tamaño maximo 10MP)\n            "
         )
       ]),
       _vm._v(" "),
@@ -17112,9 +16389,7 @@ var staticRenderFns = [
         }),
         _vm._v(" "),
         _c("button", { staticClass: "btn btn-success btn-block" }, [
-          _vm._v(
-            "\n                          REGISTRAR HABITACIÓN\n                        "
-          )
+          _vm._v("\n                REGISTRAR HABITACIÓN\n              ")
         ])
       ])
     ])

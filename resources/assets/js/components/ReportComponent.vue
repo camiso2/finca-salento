@@ -4,21 +4,11 @@
     <div class="x_panel">
       <div class="x_content">
         <br />
-        <form
-          class="form-horizontal form-label-left input_mask"
-          method="POST"
-          role="form"
-          action="/reportDayPDF"
-          target="_blank"
-          id="formReportDay"
-        >
+        <form class="form-horizontal form-label-left input_mask" method="POST" role="form" action="/reportDayPDF" target="_blank" id="formReportDay">
           <input type="hidden" name="_token" :value="csrf" />
           <input type="hidden" name="typeReport" value="1" />
 
-          <div
-            div
-            class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback"
-          >
+          <div div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
             <h4>
               <i class="fa fa-file-pdf-o fa-esp" aria-hidden="true"></i>Generar
               Reporte por día
@@ -26,42 +16,22 @@
             <hr />
           </div>
           <div div class="col-md-8 col-sm-8 col-xs-12 form-group has-feedback">
-            <date-picker
-              v-model="fetchIni"
-              valueType="format"
-              class="input-cal"
-              placeholder="Fecha de salida, ejemplo : 2022-09-22"
-            ></date-picker>
+            <date-picker v-model="fetchIni" valueType="format" class="input-cal" placeholder="Fecha de salida, ejemplo : 2022-09-22"></date-picker>
             <input type="hidden" name="fetchIni" :value="fetchIni" />
           </div>
           <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
-            <button
-              type="button"
-              class="btn btn-warning btn-block btn-lg"
-              @click="reloadDayReport"
-            >
-              <i class="fa fa-file-pdf-o fa-esp" aria-hidden="true"></i
-              ><b>GENERAR REPORTE</b>
+            <button type="button" class="btn btn-warning btn-block btn-lg" @click="reloadDayReport">
+              <i class="fa fa-file-pdf-o fa-esp" aria-hidden="true"></i><b>GENERAR REPORTE</b>
               <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
             </button>
           </div>
         </form>
 
         <hr class="hr" />
-        <form
-          class="form-horizontal form-label-left input_mask"
-          method="POST"
-          role="form"
-          action="/reportDayPDF"
-          target="_blank"
-          id="formReportBetweenDates"
-        >
+        <form class="form-horizontal form-label-left input_mask" method="POST" role="form" action="/reportDayPDF" target="_blank" id="formReportBetweenDates">
           <input type="hidden" name="_token" :value="csrf" />
           <input type="hidden" name="typeReport" value="2" />
-          <div
-            div
-            class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback"
-          >
+          <div div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
             <h4>
               <i class="fa fa-file-pdf-o fa-esp" aria-hidden="true"></i>Generar
               Reporte entre fechas
@@ -70,35 +40,20 @@
           </div>
           <div div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
             <label for="">Fecha inicio</label>
-            <date-picker
-              v-model="initDate"
-              valueType="format"
-              class="input-cal"
-              placeholder="Fecha de inicio, ejemplo : 2022-09-22"
-            ></date-picker>
+            <date-picker v-model="initDate" valueType="format" class="input-cal" placeholder="Fecha de inicio, ejemplo : 2022-09-22"></date-picker>
             <input type="hidden" name="initDate" :value="initDate" />
           </div>
           <div div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
             <label for="">Fecha de final</label>
-            <date-picker
-              v-model="finalDate"
-              valueType="format"
-              class="input-cal"
-              placeholder="Fecha de final, ejemplo : 2022-10-22"
-            ></date-picker>
+            <date-picker v-model="finalDate" valueType="format" class="input-cal" placeholder="Fecha de final, ejemplo : 2022-10-22"></date-picker>
             <input type="hidden" name="finalDate" :value="finalDate" />
           </div>
 
           <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
             <label for="">&nbsp;</label>
 
-            <button
-              type="button"
-              class="btn btn-warning btn-block btn-lg"
-              @click="reloadBetweenReport"
-            >
-              <i class="fa fa-file-pdf-o fa-esp" aria-hidden="true"></i
-              ><b>GENERAR REPORTE</b>
+            <button type="button" class="btn btn-warning btn-block btn-lg" @click="reloadBetweenReport">
+              <i class="fa fa-file-pdf-o fa-esp" aria-hidden="true"></i><b>GENERAR REPORTE</b>
               <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
             </button>
           </div>

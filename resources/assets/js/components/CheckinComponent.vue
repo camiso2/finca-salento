@@ -4,57 +4,23 @@
     <div class="x_panel">
       <div class="x_content">
         <br />
-        <form
-          class="form-horizontal form-label-left input_mask"
-          method="POST"
-          role="form"
-          enctype="multipart/form-data"
-          @submit.prevent="checkinSubmit"
-        >
+        <form class="form-horizontal form-label-left input_mask" method="POST" role="form" enctype="multipart/form-data" @submit.prevent="checkinSubmit">
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
             <label for="">Fecha de ingreso</label>
-            <input
-              type="text"
-              v-model="timeEnter"
-              class="form-control has-feedback-left"
-              placeholder="Ingresar nombre del cliente"
-              required="true"
-              readonly
-            />
-            <span
-              class="fa fa-calendar form-control-feedback left"
-              aria-hidden="true"
-            ></span>
+            <input type="text" v-model="timeEnter" class="form-control has-feedback-left" placeholder="Ingresar nombre del cliente" required="true" readonly />
+            <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
           </div>
           <div div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
             <label for="">Fecha de salida</label>
-            <date-picker
-              v-model="timeGetout"
-              valueType="format"
-              class="input-cal"
-              placeholder="Fecha de salida, ejemplo : 2022-09-22"
-            ></date-picker>
+            <date-picker v-model="timeGetout" valueType="format" class="input-cal" placeholder="Fecha de salida, ejemplo : 2022-09-22"></date-picker>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input
-              type="text"
-              v-model="name"
-              class="form-control has-feedback-left"
-              placeholder="Ingresar nombre del cliente"
-              required="true"
-            />
-            <span
-              class="fa fa-user form-control-feedback left"
-              aria-hidden="true"
-            ></span>
+            <input type="text" v-model="name" class="form-control has-feedback-left" placeholder="Ingresar nombre del cliente" required="true" />
+            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
           </div>
 
           <div class="col-md-2 col-sm-2 col-xs-2 form-group has-feedback">
-            <select
-              v-model="typeIdent"
-              class="form-control has-feedback"
-              required="true"
-            >
+            <select v-model="typeIdent" class="form-control has-feedback" required="true">
               <option value="">Tipo</option>
               <option value="0">Cédula de Ciudadania</option>
               <option value="1">Tarjeta de Identidad</option>
@@ -68,68 +34,28 @@
           </div>
 
           <div class="col-md-4 col-sm-4 col-xs-10 form-group has-feedback">
-            <input
-              type="number"
-              v-model="identClient"
-              class="form-control has-feedback-left"
-              placeholder="Ingresar identificación"
-              required="true"
-            />
-            <span
-              class="fa fa-cc form-control-feedback left"
-              aria-hidden="true"
-            ></span>
+            <input type="number" v-model="identClient" class="form-control has-feedback-left" placeholder="Ingresar identificación" required="true" />
+            <span class="fa fa-cc form-control-feedback left" aria-hidden="true"></span>
           </div>
 
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input
-              type="number"
-              v-model="phone"
-              class="form-control has-feedback-left"
-              placeholder="Ingresar teléfono del cliente"
-              required="true"
-            />
-            <span
-              class="fa fa-phone form-control-feedback left"
-              aria-hidden="true"
-            ></span>
+            <input type="number" v-model="phone" class="form-control has-feedback-left" placeholder="Ingresar teléfono del cliente" required="true" />
+            <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input
-              type="email"
-              v-model="email"
-              class="form-control has-feedback-left"
-              placeholder="Ingresar E-mail del cliente"
-              required="true"
-            />
-            <span
-              class="fa fa-envelope form-control-feedback left"
-              aria-hidden="true"
-            ></span>
+            <input type="email" v-model="email" class="form-control has-feedback-left" placeholder="Ingresar E-mail del cliente" required="true" />
+            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
 
-            <input
-              type="number"
-              v-model="advance"
-              class="form-control has-feedback-left"
-              placeholder="Ingresar anticipo del cliente"
-              required="true"
-            />
-            <span
-              class="fa fa-dollar form-control-feedback left"
-              aria-hidden="true"
-            > </span>
+            <input type="number" v-model="advance" class="form-control has-feedback-left" placeholder="Ingresar anticipo del cliente" required="true" />
+            <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"> </span>
           </div>
 
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
             <link rel="stylesheet" />
 
-            <select
-              v-model="personsQuantity"
-              class="form-control"
-              required="true"
-            >
+            <select v-model="personsQuantity" class="form-control" required="true">
               <option value="">
                 &#xf0c0; &nbsp;&nbsp;Seleccione cantidad de personas
               </option>
@@ -139,46 +65,22 @@
             </select>
           </div>
           <div class="col-md-2 col-sm-2 col-xs-4 form-group has-feedback_">
-            <span
-              class="fa fa-globe form-control"
-              style="font-size: 32px !important"
-              aria-hidden="true"
-            ></span>
+            <span class="fa fa-globe form-control" style="font-size: 32px !important" aria-hidden="true"></span>
           </div>
 
           <div class="col-md-4 col-sm-4 col-xs-8 form-group has-feedback">
-            <vue-bootstrap-typeahead
-              @hit="onNationalitySelected"
-              v-model="query"
-              :data="countries"
-              placeholder="Buscar Nacionalidad"
-              size="lg"
-              class="form-group has-feedback"
-              style="font-size: 14px !important"
-              required="true"
-            />
-            <span class="sel"
-              >País Seleccionado: <strong>{{ query }}</strong></span
-            >
+            <vue-bootstrap-typeahead @hit="onNationalitySelected" v-model="query" :data="countries" placeholder="Buscar Nacionalidad" size="lg" class="form-group has-feedback" style="font-size: 14px !important" required="true" />
+            <span class="sel">País Seleccionado: <strong>{{ query }}</strong></span>
           </div>
 
           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
             <link rel="stylesheet" />
 
-            <select
-              v-model="selectedBedroom"
-              @change="roomSeleted($event)"
-              class="form-control"
-              required="true"
-            >
+            <select v-model="selectedBedroom" @change="roomSeleted($event)" class="form-control" required="true">
               <option value="">
                 &#xf236; &nbsp;&nbsp;Habitaciones Disponibles
               </option>
-              <option
-                v-for="bedroomCode in bedrooms"
-                :value="bedroomCode.codeRoom"
-                :key="bedroomCode.id"
-              >
+              <option v-for="bedroomCode in bedrooms" :value="bedroomCode.codeRoom" :key="bedroomCode.id">
                 {{ bedroomCode.codeRoom }}
               </option>
             </select>
@@ -186,15 +88,7 @@
 
           <div class="form-group">
             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-0">
-              <textarea
-                v-model="observations"
-                id=""
-                class="form-control text-ar"
-                type="text"
-                maxlength="100"
-                required="true"
-                placeholder="Observaciones"
-              >
+              <textarea v-model="observations" id="" class="form-control text-ar" type="text" maxlength="100" required="true" placeholder="Observaciones">
               </textarea>
             </div>
           </div>

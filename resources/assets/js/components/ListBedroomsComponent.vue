@@ -2,19 +2,10 @@
   <div>
     <preloader-component v-show="preloader" />
     <!-- price element -->
-    <div
-      class="col-md-3 col-sm-6 col-xs-12 pad"
-      v-for="bedRoom in bedRooms"
-      :key="bedRoom.id"
-      :value="bedRoom.id"
-    >
+    <div class="col-md-3 col-sm-6 col-xs-12 pad" v-for="bedRoom in bedRooms" :key="bedRoom.id" :value="bedRoom.id">
       <div class="pricing ui-ribbon-container">
         <div class="ui-ribbon-wrapper">
-          <div
-            class="ui-ribbon"
-            style="background-color: #5cb85c"
-            v-if="bedRoom.occupation === 'null' || bedRoom.occupation === null"
-          >
+          <div class="ui-ribbon" style="background-color: #5cb85c" v-if="bedRoom.occupation === 'null' || bedRoom.occupation === null">
             Disponible
           </div>
           <div class="ui-ribbon" style="background-color: #f0ad4e" v-else>
@@ -27,19 +18,13 @@
             $ {{ NumberFormatJS(bedRoom.dayRoomCost) }}
             <b class="pd">Por Día</b>
           </h1>
-          <span
-            >Código Habitación : <b>{{ bedRoom.codeRoom }}</b></span
-          >
+          <span>Código Habitación : <b>{{ bedRoom.codeRoom }}</b></span>
         </div>
         <div class="x_content_">
           <div class="">
             <div class="pricing_features">
               <div class="pos-img-p">
-                <img
-                  v-bind:src="'/' + bedRoom.fileImage"
-                  class="mar-img-prof"
-                  id="silverfox"
-                />
+                <img v-bind:src="'/' + bedRoom.fileImage" class="mar-img-prof" id="silverfox" />
               </div>
 
               <ul class="list-unstyled text-left">
@@ -137,14 +122,10 @@
           </div>
           <div class="pricing_footer heig">
             <div class="col-md-10 col-sm-12 col-xs-12">
-              <a class="btn btn-success btn-block" role="button"
-                >Download <span> now!</span></a
-              >
+              <a class="btn btn-success btn-block" role="button">Download <span> now!</span></a>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-12">
-              <a class="btn btn-danger btn-block" role="button"
-                ><i class="fa fa-trash"></i
-              ></a>
+              <a class="btn btn-danger btn-block" role="button"><i class="fa fa-trash"></i></a>
             </div>
           </div>
         </div>

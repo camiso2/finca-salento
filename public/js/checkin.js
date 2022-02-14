@@ -71,7 +71,7 @@
 
 
 var bind = __webpack_require__(8);
-var isBuffer = __webpack_require__(19);
+var isBuffer = __webpack_require__(24);
 
 /*global toString:true*/
 
@@ -408,7 +408,7 @@ module.exports = g;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(21);
+var normalizeHeaderName = __webpack_require__(26);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -502,10 +502,92 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -614,290 +696,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-if (false) {
-  module.exports = require('./vue.common.prod.js')
-} else {
-  module.exports = __webpack_require__(14)
-}
-
-
-/***/ }),
 /* 5 */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1125,6 +924,207 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+if (false) {
+  module.exports = require('./vue.common.prod.js')
+} else {
+  module.exports = __webpack_require__(14)
+}
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1150,10 +1150,10 @@ module.exports = function bind(fn, thisArg) {
 
 
 var utils = __webpack_require__(0);
-var settle = __webpack_require__(22);
-var buildURL = __webpack_require__(24);
-var parseHeaders = __webpack_require__(25);
-var isURLSameOrigin = __webpack_require__(26);
+var settle = __webpack_require__(27);
+var buildURL = __webpack_require__(29);
+var parseHeaders = __webpack_require__(30);
+var isURLSameOrigin = __webpack_require__(31);
 var createError = __webpack_require__(10);
 
 module.exports = function xhrAdapter(config) {
@@ -1234,7 +1234,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(27);
+      var cookies = __webpack_require__(32);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -1318,7 +1318,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(23);
+var enhanceError = __webpack_require__(28);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -1378,7 +1378,7 @@ module.exports = Cancel;
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(18);
+module.exports = __webpack_require__(23);
 
 /***/ }),
 /* 14 */
@@ -13657,7 +13657,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(7)))
 
 /***/ }),
 /* 17 */
@@ -13696,12 +13696,158 @@ module.exports = function listToStyles (parentId, list) {
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(19)
+}
+var normalizeComponent = __webpack_require__(4)
+/* script */
+var __vue_script__ = __webpack_require__(21)
+/* template */
+var __vue_template__ = __webpack_require__(22)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-332cd81e"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/PreloaderComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-332cd81e", Component.options)
+  } else {
+    hotAPI.reload("data-v-332cd81e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(20);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("5dc50d08", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-332cd81e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PreloaderComponent.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-332cd81e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PreloaderComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "/*preload*/\n.load[data-v-332cd81e] {\n  display: block;\n  background: #eceaea;\n  color: white;\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 10000;\n  opacity: 0.75;\n  filter: alpha(opacity=75);\n  /* For IE8 and earlier */\n  border-radius: 8px;\n}\n.load p[data-v-332cd81e] {\n  display: block;\n  width: 100px;\n  height: 30px;\n  font-family: \"Poppins\", sans-serif;\n  font-size: 20px;\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  margin: auto;\n  padding-top: 100px;\n  color: #4897e0;\n}\n.load img[data-v-332cd81e] {\n  display: block;\n  width: 190px;\n  height: 190px;\n  font-family: \"Poppins\", sans-serif;\n  font-size: 30px;\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  margin: auto;\n  border-radius: 50%;\n}\n\n/*preload*/\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "preloader",
+  mounted: function mounted() {
+    console.log("Component mounted preloader.");
+  }
+});
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("span", { staticClass: "load" }, [
+        _c("img", { attrs: { src: "/images/preloads/preloader_9.gif" } }),
+        _vm._v(" "),
+        _c("p", [_vm._v("Cargando...")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-332cd81e", module.exports)
+  }
+}
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(8);
-var Axios = __webpack_require__(20);
+var Axios = __webpack_require__(25);
 var defaults = __webpack_require__(2);
 
 /**
@@ -13736,14 +13882,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(12);
-axios.CancelToken = __webpack_require__(33);
+axios.CancelToken = __webpack_require__(38);
 axios.isCancel = __webpack_require__(11);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(34);
+axios.spread = __webpack_require__(39);
 
 module.exports = axios;
 
@@ -13752,7 +13898,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 19 */
+/* 24 */
 /***/ (function(module, exports) {
 
 /*!
@@ -13769,7 +13915,7 @@ module.exports = function isBuffer (obj) {
 
 
 /***/ }),
-/* 20 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13777,8 +13923,8 @@ module.exports = function isBuffer (obj) {
 
 var defaults = __webpack_require__(2);
 var utils = __webpack_require__(0);
-var InterceptorManager = __webpack_require__(28);
-var dispatchRequest = __webpack_require__(29);
+var InterceptorManager = __webpack_require__(33);
+var dispatchRequest = __webpack_require__(34);
 
 /**
  * Create a new instance of Axios
@@ -13855,7 +14001,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 21 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13874,7 +14020,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 22 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13907,7 +14053,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 23 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13935,7 +14081,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 24 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14008,7 +14154,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 25 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14068,7 +14214,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 26 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14143,7 +14289,7 @@ module.exports = (
 
 
 /***/ }),
-/* 27 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14203,7 +14349,7 @@ module.exports = (
 
 
 /***/ }),
-/* 28 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14262,18 +14408,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 29 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var transformData = __webpack_require__(30);
+var transformData = __webpack_require__(35);
 var isCancel = __webpack_require__(11);
 var defaults = __webpack_require__(2);
-var isAbsoluteURL = __webpack_require__(31);
-var combineURLs = __webpack_require__(32);
+var isAbsoluteURL = __webpack_require__(36);
+var combineURLs = __webpack_require__(37);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -14355,7 +14501,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 30 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14382,7 +14528,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 31 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14403,7 +14549,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 32 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14424,7 +14570,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 33 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14488,7 +14634,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 34 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14522,160 +14668,100 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(36)
-}
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(38)
-/* template */
-var __vue_template__ = __webpack_require__(39)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-332cd81e"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/PreloaderComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-332cd81e", Component.options)
-  } else {
-    hotAPI.reload("data-v-332cd81e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(37);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(7)("5dc50d08", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-332cd81e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PreloaderComponent.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-332cd81e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PreloaderComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(6)(false);
-// imports
-
-
-// module
-exports.push([module.i, "/*preload*/\n.load[data-v-332cd81e] {\n  display: block;\n  background: #eceaea;\n  color: white;\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 10000;\n  opacity: 0.75;\n  filter: alpha(opacity=75);\n  /* For IE8 and earlier */\n  border-radius: 8px;\n}\n.load p[data-v-332cd81e] {\n  display: block;\n  width: 100px;\n  height: 30px;\n  font-family: \"Poppins\", sans-serif;\n  font-size: 20px;\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  margin: auto;\n  padding-top: 100px;\n  color: #4897e0;\n}\n.load img[data-v-332cd81e] {\n  display: block;\n  width: 190px;\n  height: 190px;\n  font-family: \"Poppins\", sans-serif;\n  font-size: 30px;\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  margin: auto;\n  border-radius: 50%;\n}\n\n/*preload*/\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "preloader",
-  mounted: function mounted() {
-    console.log("Component mounted preloader.");
-  }
-});
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
+/* unused harmony export isDate */
+/* harmony export (immutable) */ __webpack_exports__["d"] = toDate;
+/* harmony export (immutable) */ __webpack_exports__["b"] = isValidDate;
+/* unused harmony export startOfWeek */
+/* harmony export (immutable) */ __webpack_exports__["c"] = startOfWeekYear;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getWeek;
+function isDate(value) {
+  return value instanceof Date || Object.prototype.toString.call(value) === '[object Date]';
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("span", { staticClass: "load" }, [
-        _c("img", { attrs: { src: "/images/preloads/preloader_9.gif" } }),
-        _vm._v(" "),
-        _c("p", [_vm._v("Cargando...")])
-      ])
-    ])
+function toDate(value) {
+  if (isDate(value)) {
+    return new Date(value.getTime());
   }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-332cd81e", module.exports)
+
+  if (value == null) {
+    return new Date(NaN);
   }
+
+  return new Date(value);
 }
+function isValidDate(value) {
+  return isDate(value) && !isNaN(value.getTime());
+}
+function startOfWeek(value) {
+  var firstDayOfWeek = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
+  if (!(firstDayOfWeek >= 0 && firstDayOfWeek <= 6)) {
+    throw new RangeError('weekStartsOn must be between 0 and 6');
+  }
 
-module.exports = __webpack_require__(41);
+  var date = toDate(value);
+  var day = date.getDay();
+  var diff = (day + 7 - firstDayOfWeek) % 7;
+  date.setDate(date.getDate() - diff);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+function startOfWeekYear(value) {
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      _ref$firstDayOfWeek = _ref.firstDayOfWeek,
+      firstDayOfWeek = _ref$firstDayOfWeek === void 0 ? 0 : _ref$firstDayOfWeek,
+      _ref$firstWeekContain = _ref.firstWeekContainsDate,
+      firstWeekContainsDate = _ref$firstWeekContain === void 0 ? 1 : _ref$firstWeekContain;
 
+  if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
+    throw new RangeError('firstWeekContainsDate must be between 1 and 7');
+  }
+
+  var date = toDate(value);
+  var year = date.getFullYear();
+  var firstDateOfFirstWeek = new Date(0);
+
+  for (var i = year + 1; i >= year - 1; i--) {
+    firstDateOfFirstWeek.setFullYear(i, 0, firstWeekContainsDate);
+    firstDateOfFirstWeek.setHours(0, 0, 0, 0);
+    firstDateOfFirstWeek = startOfWeek(firstDateOfFirstWeek, firstDayOfWeek);
+
+    if (date.getTime() >= firstDateOfFirstWeek.getTime()) {
+      break;
+    }
+  }
+
+  return firstDateOfFirstWeek;
+}
+function getWeek(value) {
+  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      _ref2$firstDayOfWeek = _ref2.firstDayOfWeek,
+      firstDayOfWeek = _ref2$firstDayOfWeek === void 0 ? 0 : _ref2$firstDayOfWeek,
+      _ref2$firstWeekContai = _ref2.firstWeekContainsDate,
+      firstWeekContainsDate = _ref2$firstWeekContai === void 0 ? 1 : _ref2$firstWeekContai;
+
+  var date = toDate(value);
+  var firstDateOfThisWeek = startOfWeek(date, firstDayOfWeek);
+  var firstDateOfFirstWeek = startOfWeekYear(date, {
+    firstDayOfWeek: firstDayOfWeek,
+    firstWeekContainsDate: firstWeekContainsDate
+  });
+  var diff = firstDateOfThisWeek.getTime() - firstDateOfFirstWeek.getTime();
+  return Math.round(diff / (7 * 24 * 3600 * 1000)) + 1;
+}
 
 /***/ }),
 /* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(42);
+
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -14700,7 +14786,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(42);
+module.exports = __webpack_require__(43);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -14716,7 +14802,7 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 /**
@@ -15449,93 +15535,23 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export isDate */
-/* harmony export (immutable) */ __webpack_exports__["d"] = toDate;
-/* harmony export (immutable) */ __webpack_exports__["b"] = isValidDate;
-/* unused harmony export startOfWeek */
-/* harmony export (immutable) */ __webpack_exports__["c"] = startOfWeekYear;
-/* harmony export (immutable) */ __webpack_exports__["a"] = getWeek;
-function isDate(value) {
-  return value instanceof Date || Object.prototype.toString.call(value) === '[object Date]';
-}
-function toDate(value) {
-  if (isDate(value)) {
-    return new Date(value.getTime());
-  }
-
-  if (value == null) {
-    return new Date(NaN);
-  }
-
-  return new Date(value);
-}
-function isValidDate(value) {
-  return isDate(value) && !isNaN(value.getTime());
-}
-function startOfWeek(value) {
-  var firstDayOfWeek = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-  if (!(firstDayOfWeek >= 0 && firstDayOfWeek <= 6)) {
-    throw new RangeError('weekStartsOn must be between 0 and 6');
-  }
-
-  var date = toDate(value);
-  var day = date.getDay();
-  var diff = (day + 7 - firstDayOfWeek) % 7;
-  date.setDate(date.getDate() - diff);
-  date.setHours(0, 0, 0, 0);
-  return date;
-}
-function startOfWeekYear(value) {
-  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-      _ref$firstDayOfWeek = _ref.firstDayOfWeek,
-      firstDayOfWeek = _ref$firstDayOfWeek === void 0 ? 0 : _ref$firstDayOfWeek,
-      _ref$firstWeekContain = _ref.firstWeekContainsDate,
-      firstWeekContainsDate = _ref$firstWeekContain === void 0 ? 1 : _ref$firstWeekContain;
-
-  if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
-    throw new RangeError('firstWeekContainsDate must be between 1 and 7');
-  }
-
-  var date = toDate(value);
-  var year = date.getFullYear();
-  var firstDateOfFirstWeek = new Date(0);
-
-  for (var i = year + 1; i >= year - 1; i--) {
-    firstDateOfFirstWeek.setFullYear(i, 0, firstWeekContainsDate);
-    firstDateOfFirstWeek.setHours(0, 0, 0, 0);
-    firstDateOfFirstWeek = startOfWeek(firstDateOfFirstWeek, firstDayOfWeek);
-
-    if (date.getTime() >= firstDateOfFirstWeek.getTime()) {
-      break;
-    }
-  }
-
-  return firstDateOfFirstWeek;
-}
-function getWeek(value) {
-  var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-      _ref2$firstDayOfWeek = _ref2.firstDayOfWeek,
-      firstDayOfWeek = _ref2$firstDayOfWeek === void 0 ? 0 : _ref2$firstDayOfWeek,
-      _ref2$firstWeekContai = _ref2.firstWeekContainsDate,
-      firstWeekContainsDate = _ref2$firstWeekContai === void 0 ? 1 : _ref2$firstWeekContai;
-
-  var date = toDate(value);
-  var firstDateOfThisWeek = startOfWeek(date, firstDayOfWeek);
-  var firstDateOfFirstWeek = startOfWeekYear(date, {
-    firstDayOfWeek: firstDayOfWeek,
-    firstWeekContainsDate: firstWeekContainsDate
-  });
-  var diff = firstDateOfThisWeek.getTime() - firstDateOfFirstWeek.getTime();
-  return Math.round(diff / (7 * 24 * 3600 * 1000)) + 1;
-}
+var locale = {
+  months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  weekdaysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+  firstDayOfWeek: 0,
+  firstWeekContainsDate: 1
+};
+/* harmony default export */ __webpack_exports__["a"] = (locale);
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19501,22 +19517,6 @@ _extends(DatePicker, {
 
 
 /***/ }),
-/* 45 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var locale = {
-  months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-  monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-  weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-  weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-  weekdaysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-  firstDayOfWeek: 0,
-  firstWeekContainsDate: 1
-};
-/* harmony default export */ __webpack_exports__["a"] = (locale);
-
-/***/ }),
 /* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -19525,7 +19525,7 @@ var locale = {
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__format__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__parse__ = __webpack_require__(48);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__parse__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__(40);
 /* unused harmony reexport isDate */
 /* unused harmony reexport toDate */
 /* unused harmony reexport isValidDate */
@@ -19540,8 +19540,8 @@ var locale = {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = format;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__locale_en__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__locale_en__ = __webpack_require__(44);
 
 
 var REGEX_FORMAT = /\[([^\]]+)]|YYYY|YY?|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|m{1,2}|s{1,2}|Z{1,2}|S{1,3}|w{1,2}|x|X|a|A/g;
@@ -19747,8 +19747,8 @@ function format(val, str) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = parse;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_en__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_en__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(40);
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -20139,7 +20139,7 @@ if(false) {
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(false);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -20608,7 +20608,7 @@ module.exports = function (css) {
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
-	 true ? module.exports = factory(__webpack_require__(44)) :
+	 true ? module.exports = factory(__webpack_require__(45)) :
 	typeof define === 'function' && define.amd ? define(['vue2-datepicker'], factory) :
 	(global = global || self, (global.DatePicker = global.DatePicker || {}, global.DatePicker.lang = global.DatePicker.lang || {}, global.DatePicker.lang.es = factory(global.DatePicker)));
 }(this, (function (DatePicker) { 'use strict';
@@ -20708,7 +20708,7 @@ module.exports = __webpack_require__(92);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -20718,7 +20718,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /*require('./bootstrap');*/
 
-window.Vue = __webpack_require__(4);
+window.Vue = __webpack_require__(6);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -20741,7 +20741,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(94)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(96)
 /* template */
@@ -20794,7 +20794,7 @@ var content = __webpack_require__(95);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(7)("5ff9ab06", content, false, {});
+var update = __webpack_require__(5)("5ff9ab06", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -20813,7 +20813,7 @@ if(false) {
 /* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(false);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -20829,14 +20829,14 @@ exports.push([module.i, "\n.form-control[data-v-2e849187] {\n  color: #788c9e;\n
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PreloaderComponent__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PreloaderComponent__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PreloaderComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__PreloaderComponent__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_autosuggest__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue2_datepicker__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue2_datepicker__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue2_datepicker_index_css__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue2_datepicker_index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue2_datepicker_index_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue2_datepicker_locale_es__ = __webpack_require__(53);
@@ -20851,112 +20851,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -21424,7 +21318,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(99)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(101)
 /* template */
@@ -21477,7 +21371,7 @@ var content = __webpack_require__(100);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(7)("032b43a0", content, false, {});
+var update = __webpack_require__(5)("032b43a0", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -21496,7 +21390,7 @@ if(false) {
 /* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(false);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -21709,7 +21603,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(103)
 /* template */
@@ -21877,7 +21771,7 @@ function escapeRegExp(str) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(105)
 /* template */

@@ -6,11 +6,7 @@
         <table class="table table-striped projects">
           <thead></thead>
           <tbody>
-            <tr
-              v-for="booking in bookings.data"
-              :key="booking.id"
-              :value="booking.id"
-            >
+            <tr v-for="booking in bookings.data" :key="booking.id" :value="booking.id">
               <td>{{ booking.id }}</td>
               <td>
                 <p class="ps"><b>Cliente :</b> {{ booking.name }}</p>
@@ -20,50 +16,31 @@
               <td>
                 <ul class="list-inline">
                   <li>
-                    <img
-                      src="http://localhost/personal/njoroge/assets3/img.jpg"
-                      class="avatar"
-                      alt="Avatar"
-                    />
+                    <img src="http://localhost/personal/njoroge/assets3/img.jpg" class="avatar" alt="Avatar" />
                   </li>
                 </ul>
               </td>
               <td class="project_progress">
                 <div class="progress progress_sm">
-                  <div
-                    class="progress-bar bg-green"
-                    role="progressbar"
-                    v-bind:data-transitiongoal="valor"
-                    v-bind:style="{ width: valor + '%' }"
-                  ></div>
+                  <div class="progress-bar bg-green" role="progressbar" v-bind:data-transitiongoal="valor" v-bind:style="{ width: valor + '%' }"></div>
                 </div>
                 <small>{{ valor }}% Complete</small>
               </td>
               <td>
-                <button
-                  type="button"
-                  class="btn btn-success btn-xs"
-                  @click="dataBookingId(booking)"
-                >
+                <button type="button" class="btn btn-success btn-xs" @click="dataBookingId(booking)">
                   Datos de Reservación
                 </button>
               </td>
               <td>
-                <a href="#" class="btn btn-danger btn-xs"
-                  ><i class="fa fa-trash-o"></i>
+                <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>
                 </a>
 
-                <a href="#" class="btn btn-info btn-xs"
-                  ><i class="fa fa-pencil"></i>
+                <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>
                   Edit
                 </a>
               </td>
               <td>
-                <button
-                  type="button"
-                  class="btn btn-primary btn-block btn-xs"
-                  @click="obs(booking.id)"
-                >
+                <button type="button" class="btn btn-primary btn-block btn-xs" @click="obs(booking.id)">
                   Check-In
                   <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                 </button>
@@ -74,23 +51,15 @@
                 <nav>
                   <ul class="pagination">
                     <li class="page-item" v-show="bookings['prev_page_url']">
-                      <a
-                        href="#"
-                        class="page-link"
-                        @click.prevent="getPreviousPage"
-                      >
+                      <a href="#" class="page-link" @click.prevent="getPreviousPage">
                         <span>
                           <span aria-hidden="true">«</span>
                         </span>
                       </a>
                     </li>
-                    <li
-                      class="page-item"
-                      :class="{
+                    <li class="page-item" :class="{
                         active: bookings['current_page'] === n,
-                      }"
-                      v-for="n in bookings['last_page']"
-                    >
+                      }" v-for="n in bookings['last_page']">
                       <a href="#" class="page-link" @click.prevent="getPage(n)">
                         <span>
                           {{ n }}
@@ -98,11 +67,7 @@
                       </a>
                     </li>
                     <li class="page-item" v-show="bookings['next_page_url']">
-                      <a
-                        href="#"
-                        class="page-link"
-                        @click.prevent="getNextPage"
-                      >
+                      <a href="#" class="page-link" @click.prevent="getNextPage">
                         <span>
                           <span aria-hidden="true">»</span>
                         </span>
@@ -198,13 +163,13 @@ export default {
     },
     async getBookingsList() {
       this.preloader = true;
-     await axios
+      await axios
         .get("/listBookingsAll")
         .then(
           (response) => {
             this.preloader = false;
             this.$set(this.$data, "bookings", response.data);
-           // console.log(response.data);
+            // console.log(response.data);
           },
           (response) => {
             console.log(response.data);
@@ -224,7 +189,7 @@ export default {
     },
     async getPage(page) {
       this.preloader = true;
-     await axios
+      await axios
         .get("/listBookingsAll?page=" + page)
         .then(
           (response) => {
@@ -235,7 +200,7 @@ export default {
           (response) => {}
         )
         .catch((error) => {
-         // console.log("tenemos errores" + error);
+          // console.log("tenemos errores" + error);
           this.preloader = false;
           Swal.fire({
             icon: "error",
@@ -259,7 +224,7 @@ export default {
           (response) => {}
         )
         .catch((error) => {
-         // console.log("tenemos errores" + error);
+          // console.log("tenemos errores" + error);
           this.preloader = false;
           Swal.fire({
             icon: "error",
@@ -272,7 +237,7 @@ export default {
     },
     async getNextPage() {
       this.preloader = true;
-     await  axios
+      await axios
         .get(this.bookings["next_page_url"])
         .then(
           (response) => {
@@ -282,7 +247,7 @@ export default {
           (response) => {}
         )
         .catch((error) => {
-         // console.log("tenemos errores" + error);
+          // console.log("tenemos errores" + error);
           this.preloader = false;
           Swal.fire({
             icon: "error",
