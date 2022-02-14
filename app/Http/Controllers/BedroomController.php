@@ -13,6 +13,8 @@ use App\registerBedroom;
 
 class BedroomController extends Controller
 {
+
+
     /**
      * Create a new controller instance.
      *
@@ -79,3 +81,4 @@ class BedroomController extends Controller
         }
     }
 }
+
