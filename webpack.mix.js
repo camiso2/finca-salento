@@ -20,6 +20,7 @@ mix.js('resources/assets/js/listBookings.js', 'public/js'); //.sass('resources/a
 mix.js('resources/assets/js/checkin.js', 'public/js'); //.sass('resources/assets/sass/app.scss', 'public/css');
 mix.js('resources/assets/js/order.js', 'public/js'); //.sass('resources/assets/sass/app.scss', 'public/css');
 mix.js('resources/assets/js/report.js', 'public/js'); //.sass('resources/assets/sass/app.scss', 'public/css');
+mix.js('resources/assets/js/helpers.js', 'public/js'); //.sass('resources/assets/sass/app.scss', 'public/css');
 
 
 

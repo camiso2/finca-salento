@@ -20,7 +20,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12  form-group  has-feedback   ">
               <select v-model="typeBedrooms" class="form-control has-feedback">
                 <option disabled value="">
-                  &#xf0db; | Seleccionar tipo de habitación
+                  &#xf0db;   Seleccionar tipo de habitación
                 </option>
                 <option value="habitacion sencilla">
                   Habitación Sencilla
@@ -69,7 +69,7 @@
             <div class=" col-md-6 col-sm-6 col-xs-12 form-group has-feedback ">
               <select v-model="bedQuantity" class="form-control">
                 <option value="">
-                  &#xf236; | Seleccione cantidad de camas
+                  &#xf236;   Seleccione cantidad de camas
                 </option>
                 <option v-for="n in beds" :value="n" :key="n">
                   {{ n }}
@@ -279,10 +279,26 @@
               <hr />
 
               <div class="form-group">
-                <label for="focusedinput" class="col-sm-2 control-label"></label>
-                <button class="btn btn-success btn-block">
-                  REGISTRAR HABITACIÓN
+
+
+                  <div class="form-group">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+              <hr />
+              <!--<button  class="btn btn-primary">Borrar</button>-->
+              <button  class="btn btn-success" style="width:50%">REGISTRAR HABITACIÓN</button>
+              <a href="/dashboard/bedrooms">
+                <button type="button" class="btn btn-primary">
+                  Ver Habitaciones
                 </button>
+              </a>
+            </div>
+          </div>
+
+               <!-- <button class="btn btn-success btn-block">
+                  REGISTRAR HABITACIÓN
+                </button>-->
+
+
               </div>
             </div>
           </div>
@@ -297,10 +313,11 @@
 <script>
 import axios from "axios";
 import PreloaderComponent from "./PreloaderComponent";
+import Helpers from "./HelpersComponent";
 export default {
   name: "registerBedroom",
   components: {
-    PreloaderComponent,
+    PreloaderComponent,Helpers
   },
   computed: {},
   props: {
@@ -327,31 +344,21 @@ export default {
       fileImage: "",
       previewImage: "",
       fileupload: "",
-      /*delete: null,
-      state: null,
-      occupation: null,*/
       beds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      helper: Helpers,
     };
   },
   mounted() {
     console.log("Component mounted registerBedroom.");
   },
-
   methods: {
     onImageChanged: function (event) {
       // Preview imagen
       this.fileImage = event.target.files[0];
       this.previewImage = URL.createObjectURL(this.fileImage);
       var fileSize = event.target.files[0].size;
-      if (fileSize > 10000000) {
-        //this.companyLogoError ="La imagen no debe pesar mas de 1MB, por favor introduzca una nueva";
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Lo Sentimos La imagen no debe pesar mas de 10MB, por favor introduzca una nueva",
-          allowOutsideClick: false,
-          //footer: '<a href="">Why do I have this issue?</a>',
-        });
+      if (fileSize > 1) {
+        this.helper.helpers.error("Lo Sentimos La imagen no debe pesar mas de 10MB, por favor introduzca una nueva", false, "oops");
         this.$refs.fileupload.value = "";
       }
     },
@@ -374,12 +381,9 @@ export default {
         rradio: this.rradio,
         fileImage: this.fileImage,
         user_id: this.user_id,
-        /* delete: this.delete,
-        state: this.state,
-        occupation: this.occupation,*/
       };
-      // convertimos el array a FormData
-      var formData = this.toFormData(data);
+      // convert array a FormData
+      var formData = this.helper.helpers.toFormData(data);
       axios
         .post("/registerBedroom", formData, {
           "content-type": "multipart/form-data",
@@ -396,69 +400,18 @@ export default {
               timer: 1500,
             });
             location.reload();
-            /*this.$refs.fileupload.value = "";
-            this.typeBedrooms = "";
-            this.bedQuantity = "";
-            this.dayRoomCost = "";
-            this.name = "";
-            this.jacuzzi = "";
-            this.cooling = "";
-            this.telephoneService = "";
-            this.airConditioning = "";
-            this.internet = "";
-            this.furniture = "";
-            this.privateBathroom = "";
-            this.roomWindow = "";
-            this.tv = "";
-            this.rradio = "";
-            this.fileImage = "";
-            this.imagen = "";
-            Swal.fire({
-              icon: "success",
-              title: "La Habitación se Registró con Éxito !",
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "Registrar Más Habitaciones",
-              footer:
-                '<a href="/dashboard/bedrooms">VER LISTA DE HABITACIONES</a>',
-              allowOutsideClick: false,
-              showClass: {
-                popup: "animate__animated animate__fadeInDown",
-              },
-              hideClass: {
-                popup: "animate__animated animate__fadeOutUp",
-              },
-            });*/
           } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Lo  Sentimos Hay un Error, Intente de Nuevo",
-              //footer: '<a href="">Why do I have this issue?</a>',
-            });
+            this.helper.helpers.error("Lo Sentimos Hay un Error, Intente de Nuevo",  false,  "oops");
           }
         })
         .catch((error) => {
           console.log("tenemos errores" + error);
           this.preloader = false;
           this.$refs.fileupload.value = "";
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Lo  Sentimos Hay un Error, Intente de Nuevo",
-            allowOutsideClick: false,
-            //footer: '<a href="">Why do I have this issue?</a>',
-          });
+          this.helper.helpers.error("Lo Sentimos Hay un Error, Intente de Nuevo", false, "oops");
         });
     },
-    toFormData(obj) {
-      // funcion que convierte a formData
-      var formData = new FormData();
-      for (var key in obj) {
-        formData.append(key, obj[key]);
-        console.log(key, obj[key]);
-      }
-      return formData;
-    },
+
   },
 };
 </script>
@@ -497,9 +450,11 @@ select {
 #center-td {
   text-align: center;
 }
+
+
 select {
-  font-family: fontAwesome !important ;
-  font-size: 16px !important;
+  font-family: fontAwesome, Arial, sans-serif !important ;
+  font-size: 14px !important;
   color: #788c9e !important;
 }
 </style>

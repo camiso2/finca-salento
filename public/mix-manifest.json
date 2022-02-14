@@ -7,5 +7,6 @@
     "/js/listBedrooms.js": "/js/listBedrooms.js",
     "/js/invoice.js": "/js/invoice.js",
     "/js/registerBedroom.js": "/js/registerBedroom.js",
-    "/js/preloader.js": "/js/preloader.js"
+    "/js/preloader.js": "/js/preloader.js",
+    "/js/helpers.js": "/js/helpers.js"
 }

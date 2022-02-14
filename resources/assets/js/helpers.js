@@ -5,21 +5,24 @@
  */
 
 /*require('./bootstrap');*/
-
 import Vue from 'vue';
-const axios = require('axios').default;
-
 window.Vue = require('vue');
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('bedroom-component', require('./components/RegisterBedroomComponent.vue'));
-
+Vue.component('helpers-component', require('./components/HelpersComponent.vue'));
+//Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead);
 
 const app = new Vue({
-    el: '#registerBedroom'
+    el: '#helpers',
 });
+
+
+
+
+
+
+
