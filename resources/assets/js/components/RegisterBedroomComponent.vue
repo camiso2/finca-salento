@@ -342,7 +342,7 @@ export default {
           console.log("correct : ", response.data);
           if (response.data.success == "success") {
             this.helper.helpers.success(
-              "La reservación se registró con éxito",
+              "La habitación se registró con éxito",
               false,
               1500
             );

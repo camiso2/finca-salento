@@ -15387,7 +15387,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.preloader = false;
         console.log("correct : ", response.data);
         if (response.data.success == "success") {
-          _this.helper.helpers.success("La reservación se registró con éxito", false, 1500);
+          _this.helper.helpers.success("La habitación se registró con éxito", false, 1500);
           location.reload();
         } else {
           _this.helper.helpers.error("Lo Sentimos Hay un Error, Intente de Nuevo", false, "oops");

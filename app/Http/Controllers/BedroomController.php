@@ -49,7 +49,6 @@ class BedroomController extends Controller
             /*test  funcional de git git*/
             ini_set('memory_limit', '256M');
             $file = $request->file('fileImage');
-            $extension = $file->getClientOriginalExtension();
             $file_name = Auth::user()->id . "-" . authenticate::randomLakname(15) . '.' . $file->getClientOriginalExtension();
             $destinationPath = "bedrooms/";
             if (!file_exists($destinationPath)) {
@@ -57,13 +56,9 @@ class BedroomController extends Controller
                     return response()->json(['success' => 'error']);
                 }
             }
-            $image = Image::make($file);
-            $image->resize(640, null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-            $image->orientate();
-            $image->save($destinationPath . $file_name);
+            if (!$this->saveImage($file, $destinationPath, $file_name)) {
+                return response()->json(['success' => 'error']);
+            }
             registerBedroom::create($request->all());
             $registerImage = registerBedroom::latest('id')->first();
             $registerImage->fileImage = $destinationPath . $file_name;
@@ -72,6 +67,33 @@ class BedroomController extends Controller
             return response()->json(['success' => 'success']);
         } catch (\Exception $e) {
             Log::info("Error Register Bedroom:: " . $e->getMessage());
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * save and redimention image in folder
+     *
+     * @param String $file
+     * @param String $destinationPath
+     * @param String $file_name
+     * @return Boolean
+     */
+    public function saveImage($file, $destinationPath, $file_name): bool
+    {
+        try {
+            $image = Image::make($file);
+            $image->resize(640, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            $image->orientate();
+            $image->save($destinationPath . $file_name);
+            if ($image) {
+                return true;
+            }
+        } catch (\Exception $e) {
+            Log::info("Error save img :: " . $e->getMessage());
             return $e->getMessage();
         }
     }
