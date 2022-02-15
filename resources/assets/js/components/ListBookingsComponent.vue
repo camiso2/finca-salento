@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <div class="x_content">
       <!-- start project list -->
       <div style="overflow-x: auto">

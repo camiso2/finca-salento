@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image as Image;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\getMessage;
 use App\Custom\authenticate;
 use App\registerBedroom;
@@ -36,8 +37,13 @@ class BedroomController extends Controller
         return View('dashboard.bedrooms', compact('listBedroom'));
     }
 
-
-    public function registerBedroom(Request  $request)
+    /**
+     *  Register data the bedrooms
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function registerBedroom(Request  $request): JsonResponse
     {
         try {
             /*test  funcional de git git*/
@@ -70,10 +76,16 @@ class BedroomController extends Controller
         }
     }
 
-    public function ListBedroomsAll()
+    /**
+     * Get all data bedrooms with use the scope local model registerBedroom
+     *
+     * @return JsonResponse
+     */
+
+    public function ListBedroomsAll(): JsonResponse
     {
         try {
-            $listBedrooms  = registerBedroom::orderBy('id', 'DESC')->get();
+            $listBedrooms  = registerBedroom::ListBedroomsAll()->get()->toArray();
             return response()->json($listBedrooms);
         } catch (\Exception $e) {
             Log::info("Error List Bedroom :: " . $e->getMessage());
@@ -81,4 +93,3 @@ class BedroomController extends Controller
         }
     }
 }
-

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Database\Eloquent\Model;
 
 class registerBedroom extends Model
@@ -29,4 +30,14 @@ class registerBedroom extends Model
         "codeRoom",
         "occupation",
     ];
+
+     /**
+     * Get all data bedrooms
+     *
+     * @param $query
+     */
+    public function scopeListBedroomsAll($query)
+    {
+        $query->orderBy('id', 'DESC');
+    }
 }

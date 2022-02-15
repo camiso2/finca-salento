@@ -78,7 +78,7 @@
             </div>
 
             <div class=" form-group col-md-6 col-sm-6 col-xs-12">
-              <table class="table table-bordered">
+              <table class="table table-striped responsive-utilities jambo_table bulk_action">
                 <thead>
                   <th style="width: 80%; padding-left: 10px">
                     <b> INGRESE LOS SIGUIENTES DATOS </b>
@@ -152,7 +152,7 @@
             </div>
 
             <div class=" form-group col-md-6 col-sm-6 col-xs-12">
-              <table class="table table-bordered">
+              <table class="table table-striped responsive-utilities jambo_table bulk_action">
                 <thead>
                   <th style="width: 80%; padding-left: 10px">
                     <b> INGRESE LOS SIGUIENTES DATOS </b>

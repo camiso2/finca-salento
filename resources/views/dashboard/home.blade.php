@@ -17,7 +17,7 @@
 
 
                         </div>
-                        {{--  <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <div id="reportrange" class="pull-right"
                                 style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
@@ -28,27 +28,25 @@
 
                     <div class="col-md-9 col-sm-9 col-xs-12" style="padding-right: 15px;">
                         <div style="overflow-x:auto;">
-
-
+                            @include('dashboard.sections.preload_componente_view')
                             <div id="listBookings">
-                                <div style="position: fixed;margin-left:15px;">    Cargando...</div>
-                                <listbookings-component title="Reservas" user_id = "{{Auth::user()->id}}"/>
+                                <listbookings-component title="Reservas" user_id="{{Auth::user()->id}}" />
                             </div>
-
                             <!-- end project list -->
                         </div>
 
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12 bg-white">
                         <div class="x_title">
-                            <h2>Estado de  <span  style="text-transform:uppercase">ECOHOTEL @include('sections.app_name')</span></h2>
+                            <h2>Estado de <span style="text-transform:uppercase">ECOHOTEL
+                                    @include('sections.app_name')</span></h2>
                             <div class="clearfix"></div>
 
                         </div>
 
                         <div class="col-md-12 col-sm-12 col-xs-6">
                             <div>
-                                <p>Disponibilidad <br> <span style="font-size: 10px; font-weight:600" >100% </span></p>
+                                <p>Disponibilidad <br> <span style="font-size: 10px; font-weight:600">100% </span></p>
                                 <div class="">
                                     <div class="progress progress_sm" style="width: 76%;">
                                         <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="100">
@@ -60,7 +58,7 @@
                                 </div>
                             </div>
                             <div>
-                                <p>Ocupación<br> <span style="font-size: 10px; font-weight:600" >0%</span></p>
+                                <p>Ocupación<br> <span style="font-size: 10px; font-weight:600">0%</span></p>
                                 <div class="">
                                     <div class="progress progress_sm" style="width: 76%;">
                                         <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="0">
@@ -71,10 +69,12 @@
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-6">
                             <div>
-                                <p>Clientes Atendidos <br> <span style="font-size: 10px; font-weight:600" >(Meta 100000 Huespedes)</span></p>
+                                <p>Clientes Atendidos <br> <span style="font-size: 10px; font-weight:600">(Meta 100000
+                                        Huespedes)</span></p>
                                 <div class="">
                                     <div class="progress progress_sm" style="width: 76%;">
-                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{ 400/10 }}">
+                                        <div class="progress-bar bg-green" role="progressbar"
+                                            data-transitiongoal="{{ 400/10 }}">
                                         </div>
                                     </div>
                                 </div>

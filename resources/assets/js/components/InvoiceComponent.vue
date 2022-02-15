@@ -187,7 +187,9 @@ export default {
                 : response.data.dayStay + dia + response.data.hourStay + hora;
 
             this.iva = this.NumberFormatJS(response.data.iva.toString());
-            this.valueStay = this.NumberFormatJS(response.data.valueStay.toString());
+            this.valueStay = this.NumberFormatJS(
+              response.data.valueStay.toString()
+            );
             this.subTotal = this.NumberFormatJS(
               response.data.subTotal.toString()
             );
