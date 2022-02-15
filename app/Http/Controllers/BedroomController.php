@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\getMessage;
 use App\Custom\authenticate;
+use App\Custom\RandomName;
 use App\registerBedroom;
 
 class BedroomController extends Controller
@@ -46,10 +47,9 @@ class BedroomController extends Controller
     public function registerBedroom(Request  $request): JsonResponse
     {
         try {
-            /*test  funcional de git git*/
             ini_set('memory_limit', '256M');
             $file = $request->file('fileImage');
-            $file_name = Auth::user()->id . "-" . authenticate::randomLakname(15) . '.' . $file->getClientOriginalExtension();
+            $file_name = Auth::user()->id . "-" . RandomName::randomName(15) . '.' . $file->getClientOriginalExtension();
             $destinationPath = "bedrooms/";
             if (!file_exists($destinationPath)) {
                 if (!mkdir($destinationPath, 0777, true)) {
@@ -79,7 +79,7 @@ class BedroomController extends Controller
      * @param String $file_name
      * @return Boolean
      */
-    public function saveImage($file, $destinationPath, $file_name): bool
+    public function saveImage(String $file, String $destinationPath, String $file_name): bool
     {
         try {
             $image = Image::make($file);
@@ -92,9 +92,10 @@ class BedroomController extends Controller
             if ($image) {
                 return true;
             }
+            return false;
         } catch (\Exception $e) {
             Log::info("Error save img :: " . $e->getMessage());
-            return $e->getMessage();
+            return false;
         }
     }
 

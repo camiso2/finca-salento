@@ -1,25 +1,17 @@
-<?php 
+<?php
 
 namespace App\Custom;
 use DateTime;
 
 
 define('METHOD','AES-256-CBC');
-define('SECRET_KEY','$mimenupro@2020');
+define('SECRET_KEY','$fincasalento@2022');
 define('SECRET_IV','101712');
 
-class authenticate 
+class authenticate
 {
 
-	public static function randomLakname($digit){
-		$key = '';
-		$keys = array_merge( range('a','z'), range(0,9) );
-		for($i=0; $i<$digit; $i++)
-		{
-			$key .= $keys[array_rand($keys)];
-		}
-		return $key;
-	}
+
 	public static function creation_publication($fetch_register){
 		$Fecha = new \DateTime();
 		$FechaActual = $Fecha->format('Y-m-d H:i:s');
@@ -37,7 +29,7 @@ class authenticate
 					$result = "hace ".$dias*(-1)." día";
 				}else{
 					$result = "hace ".$dias*(-1)." días";
-				}	
+				}
 			}else{
 				if ($horas>1) {
 					$result = "hace ".$horas." horas";
@@ -48,15 +40,15 @@ class authenticate
 						$result = "hace ".$min." minutos";
 					}
 				}
-			}	
+			}
 		}
 		return $result;
 	}
 	public static function deleted_records($url){
-		$files = glob($url.'tmp/*'); 
+		$files = glob($url.'tmp/*');
 		foreach($files as $file){
 			if(is_file($file))
-				unlink($file); 
+				unlink($file);
 		}
 		return 'ok';
 	}
