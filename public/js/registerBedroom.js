@@ -15290,6 +15290,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15339,7 +15352,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.fileImage = event.target.files[0];
       this.previewImage = URL.createObjectURL(this.fileImage);
       var fileSize = event.target.files[0].size;
-      if (fileSize > 1) {
+      if (fileSize > 100000000) {
         this.helper.helpers.error("Lo Sentimos La imagen no debe pesar mas de 10MB, por favor introduzca una nueva", false, "oops");
         this.$refs.fileupload.value = "";
       }
@@ -15764,643 +15777,627 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "fo-top" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", {
-                      staticClass: "col-sm-2 control-label",
-                      attrs: { for: "focusedinput" }
-                    }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-12 ctl" }, [
-                      _c("table", { staticClass: "table table-bordered" }, [
-                        _vm._m(0),
+                _c(
+                  "div",
+                  { staticClass: " form-group col-md-6 col-sm-6 col-xs-12" },
+                  [
+                    _c("table", { staticClass: "table table-bordered" }, [
+                      _vm._m(0),
+                      _vm._v(" "),
+                      _c("tbody", [
+                        _c("tr", [
+                          _c("td", [
+                            _vm._v(
+                              "\n                    La habitación tiene servicio de internet ?\n                  "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.internet,
+                                  expression: "internet"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "internet",
+                                value: "si",
+                                required: "true"
+                              },
+                              domProps: { checked: _vm._q(_vm.internet, "si") },
+                              on: {
+                                change: function($event) {
+                                  _vm.internet = "si"
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.internet,
+                                  expression: "internet"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "internet",
+                                required: "true",
+                                value: "no"
+                              },
+                              domProps: { checked: _vm._q(_vm.internet, "no") },
+                              on: {
+                                change: function($event) {
+                                  _vm.internet = "no"
+                                }
+                              }
+                            })
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _c("tbody", [
-                          _c("tr", [
-                            _c("td", [_vm._v("La habitación tiene radio ?")]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.rradio,
-                                    expression: "rradio"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "rradio",
-                                  value: "si",
-                                  required: "true"
-                                },
-                                domProps: { checked: _vm._q(_vm.rradio, "si") },
-                                on: {
-                                  change: function($event) {
-                                    _vm.rradio = "si"
-                                  }
-                                }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.rradio,
-                                    expression: "rradio"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "rradio",
-                                  required: "true",
-                                  value: "no",
-                                  lass: "flat"
-                                },
-                                domProps: { checked: _vm._q(_vm.rradio, "no") },
-                                on: {
-                                  change: function($event) {
-                                    _vm.rradio = "no"
-                                  }
-                                }
-                              })
-                            ])
+                        _c("tr", [
+                          _c("td", [
+                            _vm._v(
+                              "\n                    La habitación tiene aire acondicionado ?\n                  "
+                            )
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v("La habitación tiene televisión ?")
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.tv,
-                                    expression: "tv"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "tv",
-                                  value: "si",
-                                  required: "true"
-                                },
-                                domProps: { checked: _vm._q(_vm.tv, "si") },
-                                on: {
-                                  change: function($event) {
-                                    _vm.tv = "si"
-                                  }
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.airConditioning,
+                                  expression: "airConditioning"
                                 }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.tv,
-                                    expression: "tv"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "tv",
-                                  required: "true",
-                                  value: "no"
-                                },
-                                domProps: { checked: _vm._q(_vm.tv, "no") },
-                                on: {
-                                  change: function($event) {
-                                    _vm.tv = "no"
-                                  }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "airConditioning",
+                                value: "si",
+                                required: "true"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.airConditioning, "si")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.airConditioning = "si"
                                 }
-                              })
-                            ])
+                              }
+                            })
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [_vm._v("La habitación tiene ventana ?")]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.roomWindow,
-                                    expression: "roomWindow"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "roomWindow",
-                                  value: "si",
-                                  required: "true"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.roomWindow, "si")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.roomWindow = "si"
-                                  }
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.airConditioning,
+                                  expression: "airConditioning"
                                 }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.roomWindow,
-                                    expression: "roomWindow"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "roomWindow",
-                                  required: "true",
-                                  value: "no"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.roomWindow, "no")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.roomWindow = "no"
-                                  }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "airConditioning",
+                                required: "true",
+                                value: "no"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.airConditioning, "no")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.airConditioning = "no"
                                 }
-                              })
-                            ])
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("td", [
+                            _vm._v(
+                              "\n                    La habitación tiene servicio teléfonico ?\n                  "
+                            )
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v("La habitación tiene baño privado ?")
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.privateBathroom,
-                                    expression: "privateBathroom"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "privateBathroom",
-                                  value: "si",
-                                  required: "true"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.privateBathroom, "si")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.privateBathroom = "si"
-                                  }
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.telephoneService,
+                                  expression: "telephoneService"
                                 }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.privateBathroom,
-                                    expression: "privateBathroom"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "privateBathroom",
-                                  required: "true",
-                                  value: "no"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.privateBathroom, "no")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.privateBathroom = "no"
-                                  }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "telephoneService",
+                                value: "si",
+                                required: "true"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.telephoneService, "si")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.telephoneService = "si"
                                 }
-                              })
-                            ])
+                              }
+                            })
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                        La habitación tiene mobiliario basico ?\n                      "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.furniture,
-                                    expression: "furniture"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "furniture",
-                                  value: "si",
-                                  required: "true"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.furniture, "si")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.furniture = "si"
-                                  }
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.telephoneService,
+                                  expression: "telephoneService"
                                 }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.furniture,
-                                    expression: "furniture"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "furniture",
-                                  required: "true",
-                                  value: "no"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.furniture, "no")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.furniture = "no"
-                                  }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "telephoneService",
+                                required: "true",
+                                value: "no"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.telephoneService, "no")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.telephoneService = "no"
                                 }
-                              })
-                            ])
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("td", [
+                            _vm._v(
+                              "\n                    La habitación tiene refrigerador ?\n                  "
+                            )
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                        La habitación tiene servicio de internet ?\n                      "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.internet,
-                                    expression: "internet"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "internet",
-                                  value: "si",
-                                  required: "true"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.internet, "si")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.internet = "si"
-                                  }
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.cooling,
+                                  expression: "cooling"
                                 }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.internet,
-                                    expression: "internet"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "internet",
-                                  required: "true",
-                                  value: "no"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.internet, "no")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.internet = "no"
-                                  }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "cooling",
+                                value: "si",
+                                required: "true"
+                              },
+                              domProps: { checked: _vm._q(_vm.cooling, "si") },
+                              on: {
+                                change: function($event) {
+                                  _vm.cooling = "si"
                                 }
-                              })
-                            ])
+                              }
+                            })
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                        La habitación tiene aire acondicionado ?\n                      "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.airConditioning,
-                                    expression: "airConditioning"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "airConditioning",
-                                  value: "si",
-                                  required: "true"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.airConditioning, "si")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.airConditioning = "si"
-                                  }
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.cooling,
+                                  expression: "cooling"
                                 }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.airConditioning,
-                                    expression: "airConditioning"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "airConditioning",
-                                  required: "true",
-                                  value: "no"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.airConditioning, "no")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.airConditioning = "no"
-                                  }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "cooling",
+                                required: "true",
+                                value: "no"
+                              },
+                              domProps: { checked: _vm._q(_vm.cooling, "no") },
+                              on: {
+                                change: function($event) {
+                                  _vm.cooling = "no"
                                 }
-                              })
-                            ])
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("td", [
+                            _vm._v(
+                              "\n                    La habitación tiene servicio de jacuzzi ?\n                  "
+                            )
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                        La habitación tiene servicio teléfonico ?\n                      "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.telephoneService,
-                                    expression: "telephoneService"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "telephoneService",
-                                  value: "si",
-                                  required: "true"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.telephoneService, "si")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.telephoneService = "si"
-                                  }
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.jacuzzi,
+                                  expression: "jacuzzi"
                                 }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.telephoneService,
-                                    expression: "telephoneService"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "telephoneService",
-                                  required: "true",
-                                  value: "no"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.telephoneService, "no")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.telephoneService = "no"
-                                  }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "jacuzzi",
+                                required: "true",
+                                value: "si"
+                              },
+                              domProps: { checked: _vm._q(_vm.jacuzzi, "si") },
+                              on: {
+                                change: function($event) {
+                                  _vm.jacuzzi = "si"
                                 }
-                              })
-                            ])
+                              }
+                            })
                           ]),
                           _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                        La habitación tiene servicio de Nevera\n                        (refrigerador) ?\n                      "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.cooling,
-                                    expression: "cooling"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "cooling",
-                                  value: "si",
-                                  required: "true"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.cooling, "si")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.cooling = "si"
-                                  }
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.jacuzzi,
+                                  expression: "jacuzzi"
                                 }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.cooling,
-                                    expression: "cooling"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "cooling",
-                                  required: "true",
-                                  value: "no"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.cooling, "no")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.cooling = "no"
-                                  }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "jacuzzi",
+                                required: "true",
+                                value: "no"
+                              },
+                              domProps: { checked: _vm._q(_vm.jacuzzi, "no") },
+                              on: {
+                                change: function($event) {
+                                  _vm.jacuzzi = "no"
                                 }
-                              })
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("tr", [
-                            _c("td", [
-                              _vm._v(
-                                "\n                        La habitación tiene servicio de jacuzzi ?\n                      "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.jacuzzi,
-                                    expression: "jacuzzi"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "jacuzzi",
-                                  required: "true",
-                                  value: "si"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.jacuzzi, "si")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.jacuzzi = "si"
-                                  }
-                                }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { attrs: { id: "center-td" } }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.jacuzzi,
-                                    expression: "jacuzzi"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "radio",
-                                  name: "jacuzzi",
-                                  required: "true",
-                                  value: "no"
-                                },
-                                domProps: {
-                                  checked: _vm._q(_vm.jacuzzi, "no")
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.jacuzzi = "no"
-                                  }
-                                }
-                              })
-                            ])
+                              }
+                            })
                           ])
                         ])
                       ])
                     ])
-                  ])
-                ]),
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "fo-top" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", {
-                      staticClass: "col-sm-2 control-label",
-                      attrs: { for: "focusedinput" }
-                    }),
-                    _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: " form-group col-md-6 col-sm-6 col-xs-12" },
+                  [
+                    _c("table", { staticClass: "table table-bordered" }, [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c("tbody", [
+                        _c("tr", [
+                          _c("td", [_vm._v("La habitación tiene radio ?")]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.rradio,
+                                  expression: "rradio"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "rradio",
+                                value: "si",
+                                required: "true"
+                              },
+                              domProps: { checked: _vm._q(_vm.rradio, "si") },
+                              on: {
+                                change: function($event) {
+                                  _vm.rradio = "si"
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.rradio,
+                                  expression: "rradio"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "rradio",
+                                required: "true",
+                                value: "no",
+                                lass: "flat"
+                              },
+                              domProps: { checked: _vm._q(_vm.rradio, "no") },
+                              on: {
+                                change: function($event) {
+                                  _vm.rradio = "no"
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("td", [
+                            _vm._v("La habitación tiene televisión ?")
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.tv,
+                                  expression: "tv"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "tv",
+                                value: "si",
+                                required: "true"
+                              },
+                              domProps: { checked: _vm._q(_vm.tv, "si") },
+                              on: {
+                                change: function($event) {
+                                  _vm.tv = "si"
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.tv,
+                                  expression: "tv"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "tv",
+                                required: "true",
+                                value: "no"
+                              },
+                              domProps: { checked: _vm._q(_vm.tv, "no") },
+                              on: {
+                                change: function($event) {
+                                  _vm.tv = "no"
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("td", [_vm._v("La habitación tiene ventana ?")]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.roomWindow,
+                                  expression: "roomWindow"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "roomWindow",
+                                value: "si",
+                                required: "true"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.roomWindow, "si")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.roomWindow = "si"
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.roomWindow,
+                                  expression: "roomWindow"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "roomWindow",
+                                required: "true",
+                                value: "no"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.roomWindow, "no")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.roomWindow = "no"
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("td", [
+                            _vm._v("La habitación tiene baño privado ?")
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.privateBathroom,
+                                  expression: "privateBathroom"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "privateBathroom",
+                                value: "si",
+                                required: "true"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.privateBathroom, "si")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.privateBathroom = "si"
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.privateBathroom,
+                                  expression: "privateBathroom"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "privateBathroom",
+                                required: "true",
+                                value: "no"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.privateBathroom, "no")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.privateBathroom = "no"
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("td", [
+                            _vm._v(
+                              "\n                    La habitación tiene mobiliario basico ?\n                  "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.furniture,
+                                  expression: "furniture"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "furniture",
+                                value: "si",
+                                required: "true"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.furniture, "si")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.furniture = "si"
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { id: "center-td" } }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.furniture,
+                                  expression: "furniture"
+                                }
+                              ],
+                              attrs: {
+                                type: "radio",
+                                name: "furniture",
+                                required: "true",
+                                value: "no"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.furniture, "no")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.furniture = "no"
+                                }
+                              }
+                            })
+                          ])
+                        ])
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: " form-group col-md-6 col-sm-6 col-xs-12" },
+                  [
                     _c("div", { staticClass: "input-group" }, [
                       _c("span", { staticClass: "input-group-addon" }, [
                         _vm._v("Seleccione la imagen")
                       ]),
-                      _vm._v(" "),
-                      _vm.fileImage
-                        ? _c("img", {
-                            staticClass: "img-thumbnail mt-2",
-                            staticStyle: { width: "50%" },
-                            attrs: { src: _vm.previewImage }
-                          })
-                        : _vm._e(),
                       _vm._v(" "),
                       _c("input", {
                         ref: "fileupload",
@@ -16418,17 +16415,32 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "clearfix" })
-                  ])
-                ]),
+                    _c("p", { staticClass: "help-block" }, [
+                      _vm._v(
+                        "\n              (.JPG, .PNG .GIF ->se recomienda que la imagen sea\n              tomada de forma horizontal, tamaño maximo 10MP)\n            "
+                      )
+                    ])
+                  ]
+                ),
                 _vm._v(" "),
-                _vm._m(1)
+                _c(
+                  "div",
+                  { staticClass: " form-group col-md-6 col-sm-6 col-xs-12" },
+                  [
+                    _vm.fileImage
+                      ? _c("img", {
+                          staticClass: "img-thumbnail mt-2",
+                          staticStyle: { width: "50%" },
+                          attrs: { src: _vm.previewImage }
+                        })
+                      : _vm._e()
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2)
               ])
             ]
-          ),
-          _vm._v(" "),
-          _c("br"),
-          _c("br")
+          )
         ])
       ])
     ],
@@ -16446,11 +16458,11 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("th", { staticStyle: { width: "10%", "text-align": "center" } }, [
-        _vm._v("\n                      SI\n                    ")
+        _vm._v("\n                  SI\n                ")
       ]),
       _vm._v(" "),
       _c("th", { staticStyle: { width: "10%", "text-align": "center" } }, [
-        _vm._v("\n                      NO\n                    ")
+        _vm._v("\n                  NO\n                ")
       ])
     ])
   },
@@ -16458,18 +16470,28 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "fo-top" }, [
-      _c("p", { staticClass: "help-block" }, [
-        _c("label", {
-          staticClass: "col-sm-2 control-label",
-          attrs: { for: "focusedinput" }
-        }),
-        _vm._v(
-          "\n              (.JPG, .PNG .GIF ->se recomienda que la imagen sea\n              tomada de forma horizontal, tamaño maximo 10MP)\n            "
-        )
+    return _c("thead", [
+      _c("th", { staticStyle: { width: "80%", "padding-left": "10px" } }, [
+        _c("b", [_vm._v(" INGRESE LOS SIGUIENTES DATOS ")])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: " form-group col-md-12 col-sm-12 col-xs-12 " }, [
+      _c("th", { staticStyle: { width: "10%", "text-align": "center" } }, [
+        _vm._v("\n                  SI\n                ")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticStyle: { width: "10%", "text-align": "center" } }, [
+        _vm._v("\n                  NO\n                ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: " form-group col-md-12 col-sm-12 col-xs-12 " },
+      [
         _c("hr"),
         _vm._v(" "),
         _c(
@@ -16483,7 +16505,7 @@ var staticRenderFns = [
             "button",
             { staticClass: "btn btn-primary", attrs: { type: "button" } },
             [
-              _vm._v("\n                  Ver Habitaciones "),
+              _vm._v("\n                Ver Habitaciones "),
               _c("i", {
                 staticClass: "fa fa-arrow-circle-right",
                 attrs: { "aria-hidden": "true" }
@@ -16491,8 +16513,8 @@ var staticRenderFns = [
             ]
           )
         ])
-      ])
-    ])
+      ]
+    )
   }
 ]
 render._withStripped = true

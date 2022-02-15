@@ -15920,6 +15920,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -16094,242 +16103,24 @@ var render = function() {
         ]
       }),
       _vm._v(" "),
-      _c(
-        "form",
-        {
-          staticClass: "form-horizontal form-label-left input_mask",
-          attrs: { method: "POST", role: "form" },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.invoiceSubmit.apply(null, arguments)
-            }
-          }
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass:
-                "col-md-12 col-sm-12 col-xs-12 form-group has-feedback"
-            },
-            [
-              _c("link", { attrs: { rel: "stylesheet" } }),
-              _vm._v(" "),
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.selectedBedroom,
-                      expression: "selectedBedroom"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { required: "true" },
-                  on: {
-                    change: [
-                      function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.selectedBedroom = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      },
-                      function($event) {
-                        return _vm.roomSeleted($event)
-                      }
-                    ]
-                  }
-                },
-                [
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v(
-                      "\n             Seleccione Habitacion para Facturar\n        "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.bedrooms, function(bedroomCode) {
-                    return _c(
-                      "option",
-                      {
-                        key: bedroomCode.id,
-                        domProps: { value: bedroomCode.codeRoom }
-                      },
-                      [
-                        _vm._v(
-                          "\n          " +
-                            _vm._s(bedroomCode.codeRoom) +
-                            "\n        "
-                        )
-                      ]
-                    )
-                  })
-                ],
-                2
-              )
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c("transition", { attrs: { name: "fade" } }, [
-        _vm.showButtonGenerateInvoice
-          ? _c(
+      _c("div", { staticClass: "x_panel" }, [
+        _c(
+          "div",
+          { staticClass: "x_content" },
+          [
+            _c(
               "form",
               {
                 staticClass: "form-horizontal form-label-left input_mask",
-                attrs: {
-                  method: "POST",
-                  role: "form",
-                  action: "/invoicePDF",
-                  target: "_blank",
-                  id: "formReceipt"
+                attrs: { method: "POST", role: "form" },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.invoiceSubmit.apply(null, arguments)
+                  }
                 }
               },
               [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.invoiceBebroom_id,
-                      expression: "invoiceBebroom_id"
-                    }
-                  ],
-                  attrs: { type: "hidden" },
-                  domProps: { value: _vm.invoiceBebroom_id },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.invoiceBebroom_id = $event.target.value
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: { type: "hidden", name: "_token" },
-                  domProps: { value: _vm.csrf }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: { type: "hidden", name: "debroom_id" },
-                  domProps: { value: _vm.debroom_id }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: { type: "hidden", name: "user_id" },
-                  domProps: { value: _vm.user_id }
-                }),
-                _vm._v(" "),
-                _vm.disscount
-                  ? _c("div", [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "col-md-6 col-sm-6 col-xs-12 form-group has-feedback"
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.disscountClient,
-                                expression: "disscountClient"
-                              }
-                            ],
-                            staticClass: "form-control has-feedback-left",
-                            attrs: {
-                              type: "number",
-                              placeholder: "descuento del cliente",
-                              name: "disscountClient"
-                            },
-                            domProps: { value: _vm.disscountClient },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.disscountClient = $event.target.value
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("span", {
-                            staticClass:
-                              "fa fa-dollar form-control-feedback left",
-                            attrs: { "aria-hidden": "true" }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "col-md-6 col-sm-6 col-xs-12 form-group has-feedback"
-                        },
-                        [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.observations,
-                                expression: "observations"
-                              }
-                            ],
-                            staticClass: "form-control text-ar",
-                            attrs: {
-                              id: "",
-                              type: "text",
-                              maxlength: "100",
-                              placeholder: "porque? ",
-                              name: "observations"
-                            },
-                            domProps: { value: _vm.observations },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.observations = $event.target.value
-                              }
-                            }
-                          })
-                        ]
-                      )
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-md-12 col-sm-12 col-xs-12 form-group" },
-                  [
-                    _c("i", {
-                      staticClass: "fa fa-calculator fa-esp",
-                      attrs: { "aria-hidden": "true" }
-                    }),
-                    _vm._v(
-                      "Quiere\n        Reliazar Descuento al Cliente !\n      "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
                 _c(
                   "div",
                   {
@@ -16337,180 +16128,430 @@ var render = function() {
                       "col-md-12 col-sm-12 col-xs-12 form-group has-feedback"
                   },
                   [
+                    _c("link", { attrs: { rel: "stylesheet" } }),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
                     _c(
-                      "button",
+                      "select",
                       {
-                        staticClass: "btn btn-warning btn-block btn-lg",
-                        attrs: { type: "button" },
-                        on: { click: _vm.reloadData }
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selectedBedroom,
+                            expression: "selectedBedroom"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { required: "true" },
+                        on: {
+                          change: [
+                            function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.selectedBedroom = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            },
+                            function($event) {
+                              return _vm.roomSeleted($event)
+                            }
+                          ]
+                        }
                       },
                       [
-                        _c("i", {
-                          staticClass: "fa fa-calculator fa-esp",
-                          attrs: { "aria-hidden": "true" }
-                        }),
-                        _c("b", [_vm._v("PAGAR CUENTA DEL CLIENTE")]),
+                        _c("option", { attrs: { value: "" } }, [
+                          _vm._v(
+                            "\n                 Seleccione Habitacion para Facturar\n            "
+                          )
+                        ]),
                         _vm._v(" "),
-                        _c("i", {
-                          staticClass: "fa fa-arrow-circle-right",
-                          attrs: { "aria-hidden": "true" }
+                        _vm._l(_vm.bedrooms, function(bedroomCode) {
+                          return _c(
+                            "option",
+                            {
+                              key: bedroomCode.id,
+                              domProps: { value: bedroomCode.codeRoom }
+                            },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(bedroomCode.codeRoom) +
+                                  "\n            "
+                              )
+                            ]
+                          )
                         })
-                      ]
+                      ],
+                      2
                     )
                   ]
                 )
               ]
-            )
-          : _vm._e()
-      ]),
-      _vm._v(" "),
-      _c("transition", { attrs: { name: "fade" } }, [
-        _vm.showViewInvoice
-          ? _c("div", [
-              _c("h5", [
-                _c("b", [_vm._v("Costo por día : ")]),
-                _vm._v(_vm._s(_vm.costDay) + " COP")
-              ]),
-              _vm._v(" "),
-              _c("h6", [
-                _c("b", [_vm._v("Cliente : ")]),
-                _vm._v(_vm._s(_vm.nameClient))
-              ]),
-              _vm._v(" "),
-              _c(
-                "table",
-                {
-                  staticClass:
-                    "table table-bordered responsive-utilities jambo_table"
-                },
-                [
-                  _c("thead", [
-                    _c("tr", [
+            ),
+            _vm._v(" "),
+            _c("transition", { attrs: { name: "fade" } }, [
+              _vm.showButtonGenerateInvoice
+                ? _c(
+                    "form",
+                    {
+                      staticClass: "form-horizontal form-label-left input_mask",
+                      attrs: {
+                        method: "POST",
+                        role: "form",
+                        action: "/invoicePDF",
+                        target: "_blank",
+                        id: "formReceipt"
+                      }
+                    },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.invoiceBebroom_id,
+                            expression: "invoiceBebroom_id"
+                          }
+                        ],
+                        attrs: { type: "hidden" },
+                        domProps: { value: _vm.invoiceBebroom_id },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.invoiceBebroom_id = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: { type: "hidden", name: "_token" },
+                        domProps: { value: _vm.csrf }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: { type: "hidden", name: "debroom_id" },
+                        domProps: { value: _vm.debroom_id }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: { type: "hidden", name: "user_id" },
+                        domProps: { value: _vm.user_id }
+                      }),
+                      _vm._v(" "),
+                      _vm.disscount
+                        ? _c("div", [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "col-md-6 col-sm-6 col-xs-12 form-group has-feedback"
+                              },
+                              [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.disscountClient,
+                                      expression: "disscountClient"
+                                    }
+                                  ],
+                                  staticClass: "form-control has-feedback-left",
+                                  attrs: {
+                                    type: "number",
+                                    placeholder: "descuento del cliente",
+                                    name: "disscountClient"
+                                  },
+                                  domProps: { value: _vm.disscountClient },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.disscountClient = $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("span", {
+                                  staticClass:
+                                    "fa fa-dollar form-control-feedback left",
+                                  attrs: { "aria-hidden": "true" }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "col-md-6 col-sm-6 col-xs-12 form-group has-feedback"
+                              },
+                              [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.observations,
+                                      expression: "observations"
+                                    }
+                                  ],
+                                  staticClass: "form-control text-ar",
+                                  attrs: {
+                                    id: "",
+                                    type: "text",
+                                    maxlength: "100",
+                                    placeholder: "porque? ",
+                                    name: "observations"
+                                  },
+                                  domProps: { value: _vm.observations },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.observations = $event.target.value
+                                    }
+                                  }
+                                })
+                              ]
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c(
-                        "th",
+                        "div",
                         {
-                          staticStyle: { width: "80%" },
-                          attrs: { scope: "col" }
+                          staticClass:
+                            "col-md-12 col-sm-12 col-xs-12 form-group"
                         },
-                        [_vm._v("DESCRIPCIÓN")]
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-calculator fa-esp",
+                            attrs: { "aria-hidden": "true" }
+                          }),
+                          _vm._v(
+                            "Quiere\n            Reliazar Descuento al Cliente !\n          "
+                          )
+                        ]
                       ),
                       _vm._v(" "),
-                      _c("th", { attrs: { scope: "col" } }, [_vm._v("VALOR")])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    [
-                      _c("tr", [
-                        _c("td", [
-                          _vm._v("Estadía de " + _vm._s(_vm.totalStay))
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "col-md-12 col-sm-12 col-xs-12 form-group has-feedback"
+                        },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-warning btn-block btn-lg",
+                              attrs: { type: "button" },
+                              on: { click: _vm.reloadData }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-calculator fa-esp",
+                                attrs: { "aria-hidden": "true" }
+                              }),
+                              _c("b", [_vm._v("PAGAR CUENTA DEL CLIENTE")]),
+                              _vm._v(" "),
+                              _c("i", {
+                                staticClass: "fa fa-arrow-circle-right",
+                                attrs: { "aria-hidden": "true" }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    ]
+                  )
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("transition", { attrs: { name: "fade" } }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "col-md-12 col-sm-12 col-xs-12 form-group has-feedback"
+                },
+                [
+                  _vm.showViewInvoice
+                    ? _c("div", [
+                        _c("h5", [
+                          _c("b", [_vm._v("Costo por día : ")]),
+                          _vm._v(_vm._s(_vm.costDay) + " COP")
+                        ]),
+                        _vm._v(" "),
+                        _c("h6", [
+                          _c("b", [_vm._v("Cliente : ")]),
+                          _vm._v(_vm._s(_vm.nameClient))
                         ]),
                         _vm._v(" "),
                         _c(
-                          "td",
+                          "table",
                           {
-                            staticStyle: {
-                              color: "#0275d8",
-                              "font-weigth": "600"
-                            }
+                            staticClass:
+                              "table table-bordered responsive-utilities jambo_table"
                           },
                           [
-                            _vm._v(
-                              "\n              $ " +
-                                _vm._s(_vm.valueStay) +
-                                "\n            "
+                            _c("thead", [
+                              _c("tr", [
+                                _c(
+                                  "th",
+                                  {
+                                    staticStyle: { width: "80%" },
+                                    attrs: { scope: "col" }
+                                  },
+                                  [_vm._v("DESCRIPCIÓN")]
+                                ),
+                                _vm._v(" "),
+                                _c("th", { attrs: { scope: "col" } }, [
+                                  _vm._v("VALOR")
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "tbody",
+                              [
+                                _c("tr", [
+                                  _c("td", [
+                                    _vm._v(
+                                      "Estadía de " + _vm._s(_vm.totalStay)
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    {
+                                      staticStyle: {
+                                        color: "#0275d8",
+                                        "font-weigth": "600"
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                    $ " +
+                                          _vm._s(_vm.valueStay) +
+                                          "\n                  "
+                                      )
+                                    ]
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.orders, function(order) {
+                                  return _c(
+                                    "tr",
+                                    {
+                                      key: order.id,
+                                      attrs: { value: order.id }
+                                    },
+                                    [
+                                      _c("td", [_vm._v(_vm._s(order.order))]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(
+                                          "$ " +
+                                            _vm._s(
+                                              _vm.NumberFormatJS(
+                                                order.valueOrder.toString()
+                                              )
+                                            )
+                                        )
+                                      ])
+                                    ]
+                                  )
+                                }),
+                                _vm._v(" "),
+                                _c("tr", [
+                                  _c(
+                                    "td",
+                                    {
+                                      staticStyle: { "text-align": "right" },
+                                      attrs: { colspan: "1" }
+                                    },
+                                    [_c("b", [_vm._v("SUB-TOTAL.. ")])]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v("$ " + _vm._s(_vm.subTotal))
+                                  ])
+                                ]),
+                                _vm._v(" "),
+                                _c("tr", [
+                                  _c(
+                                    "td",
+                                    {
+                                      staticStyle: { "text-align": "right" },
+                                      attrs: { colspan: "1" }
+                                    },
+                                    [_c("b", [_vm._v("IVA ")])]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v("$ " + _vm._s(_vm.iva))])
+                                ]),
+                                _vm._v(" "),
+                                _c("tr", [
+                                  _c(
+                                    "td",
+                                    {
+                                      staticStyle: { "text-align": "right" },
+                                      attrs: { colspan: "1" }
+                                    },
+                                    [_c("b", [_vm._v("ANTICIPO ")])]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v("$ " + _vm._s(_vm.advance))])
+                                ]),
+                                _vm._v(" "),
+                                _c("tr", [
+                                  _c(
+                                    "td",
+                                    {
+                                      staticStyle: { "text-align": "right" },
+                                      attrs: { colspan: "1" }
+                                    },
+                                    [
+                                      _c("b", [
+                                        _c(
+                                          "span",
+                                          { staticStyle: { color: "green" } },
+                                          [_vm._v(_vm._s(_vm.balanceFavor))]
+                                        ),
+                                        _vm._v(" TOTAL\n                    ")
+                                      ])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v("$ " + _vm._s(_vm.total))])
+                                ])
+                              ],
+                              2
                             )
                           ]
                         )
-                      ]),
-                      _vm._v(" "),
-                      _vm._l(_vm.orders, function(order) {
-                        return _c(
-                          "tr",
-                          { key: order.id, attrs: { value: order.id } },
-                          [
-                            _c("td", [_vm._v(_vm._s(order.order))]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _vm._v(
-                                "$ " +
-                                  _vm._s(
-                                    _vm.NumberFormatJS(
-                                      order.valueOrder.toString()
-                                    )
-                                  )
-                              )
-                            ])
-                          ]
-                        )
-                      }),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c(
-                          "td",
-                          {
-                            staticStyle: { "text-align": "right" },
-                            attrs: { colspan: "1" }
-                          },
-                          [_c("b", [_vm._v("SUB-TOTAL.. ")])]
-                        ),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("$ " + _vm._s(_vm.subTotal))])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c(
-                          "td",
-                          {
-                            staticStyle: { "text-align": "right" },
-                            attrs: { colspan: "1" }
-                          },
-                          [_c("b", [_vm._v("IVA ")])]
-                        ),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("$ " + _vm._s(_vm.iva))])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c(
-                          "td",
-                          {
-                            staticStyle: { "text-align": "right" },
-                            attrs: { colspan: "1" }
-                          },
-                          [_c("b", [_vm._v("ANTICIPO ")])]
-                        ),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("$ " + _vm._s(_vm.advance))])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c(
-                          "td",
-                          {
-                            staticStyle: { "text-align": "right" },
-                            attrs: { colspan: "1" }
-                          },
-                          [
-                            _c("b", [
-                              _c("span", { staticStyle: { color: "green" } }, [
-                                _vm._v(_vm._s(_vm.balanceFavor))
-                              ]),
-                              _vm._v(" TOTAL\n              ")
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("$ " + _vm._s(_vm.total))])
                       ])
-                    ],
-                    2
-                  )
+                    : _vm._e()
                 ]
               )
             ])
-          : _vm._e()
+          ],
+          1
+        )
       ])
     ],
     1
@@ -16527,7 +16568,7 @@ var staticRenderFns = [
         attrs: { "aria-hidden": "true" }
       }),
       _vm._v(
-        "Seleccione\n        la habitación a la que le desea facturar.\n      "
+        "Seleccione\n            la habitación a la que le desea facturar.\n          "
       )
     ])
   }

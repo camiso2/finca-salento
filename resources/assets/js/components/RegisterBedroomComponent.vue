@@ -76,165 +76,178 @@
                 </option>
               </select>
             </div>
-            <div class="fo-top">
-              <div class="form-group">
-                <label for="focusedinput" class="col-sm-2 control-label"></label>
-                <div class="col-sm-12 ctl">
-                  <table class="table table-bordered">
-                    <thead>
-                      <th style="width: 80%; padding-left: 10px">
-                        <b> INGRESE LOS SIGUIENTES DATOS </b>
-                      </th>
-                      <th style="width: 10%; text-align: center">
-                        SI
-                      </th>
-                      <th style="width: 10%; text-align: center">
-                        NO
-                      </th>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>La habitación tiene radio ?</td>
-                        <td id="center-td">
-                          <input type="radio" name="rradio" value="si" required="true" v-model="rradio" />
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="rradio" required="true" value="no" v-model="rradio" lass="flat" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>La habitación tiene televisión ?</td>
-                        <td id="center-td">
-                          <input type="radio" name="tv" value="si" required="true" v-model="tv" />
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="tv" required="true" value="no" v-model="tv" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>La habitación tiene ventana ?</td>
-                        <td id="center-td">
-                          <input type="radio" name="roomWindow" value="si" required="true" v-model="roomWindow" />
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="roomWindow" required="true" value="no" v-model="roomWindow" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>La habitación tiene baño privado ?</td>
-                        <td id="center-td">
-                          <input type="radio" name="privateBathroom" value="si" required="true" v-model="privateBathroom" />
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="privateBathroom" required="true" value="no" v-model="privateBathroom" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          La habitación tiene mobiliario basico ?
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="furniture" value="si" required="true" v-model="furniture" />
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="furniture" required="true" value="no" v-model="furniture" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          La habitación tiene servicio de internet ?
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="internet" value="si" required="true" v-model="internet" />
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="internet" required="true" value="no" v-model="internet" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          La habitación tiene aire acondicionado ?
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="airConditioning" value="si" required="true" v-model="airConditioning" />
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="airConditioning" required="true" value="no" v-model="airConditioning" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          La habitación tiene servicio teléfonico ?
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="telephoneService" value="si" required="true" v-model="telephoneService" />
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="telephoneService" required="true" value="no" v-model="telephoneService" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          La habitación tiene servicio de Nevera
-                          (refrigerador) ?
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="cooling" value="si" required="true" v-model="cooling" />
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="cooling" required="true" value="no" v-model="cooling" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          La habitación tiene servicio de jacuzzi ?
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="jacuzzi" required="true" v-model="jacuzzi" value="si" />
-                        </td>
-                        <td id="center-td">
-                          <input type="radio" name="jacuzzi" required="true" v-model="jacuzzi" value="no" />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="fo-top">
-              <div class="form-group">
-                <label for="focusedinput" class="col-sm-2 control-label"></label>
-                <div class="input-group">
-                  <span class="input-group-addon">Seleccione la imagen</span>
-                  <img :src="previewImage" class="img-thumbnail mt-2" v-if="fileImage" style="width: 50%" />
-                  <input type="file" ref="fileupload" accept=".jpg, .jpeg, .png, gif" class="form-control" @change="onImageChanged" name="imagen" />
 
-                  <span class="input-group-addon">|</span>
-                </div>
+            <div class=" form-group col-md-6 col-sm-6 col-xs-12">
+              <table class="table table-bordered">
+                <thead>
+                  <th style="width: 80%; padding-left: 10px">
+                    <b> INGRESE LOS SIGUIENTES DATOS </b>
+                  </th>
+                  <th style="width: 10%; text-align: center">
+                    SI
+                  </th>
+                  <th style="width: 10%; text-align: center">
+                    NO
+                  </th>
+                </thead>
+                <tbody>
 
-                <div class="clearfix"></div>
-              </div>
+                  <tr>
+                    <td>
+                      La habitación tiene servicio de internet ?
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="internet" value="si" required="true" v-model="internet" />
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="internet" required="true" value="no" v-model="internet" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      La habitación tiene aire acondicionado ?
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="airConditioning" value="si" required="true" v-model="airConditioning" />
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="airConditioning" required="true" value="no" v-model="airConditioning" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      La habitación tiene servicio teléfonico ?
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="telephoneService" value="si" required="true" v-model="telephoneService" />
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="telephoneService" required="true" value="no" v-model="telephoneService" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      La habitación tiene refrigerador ?
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="cooling" value="si" required="true" v-model="cooling" />
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="cooling" required="true" value="no" v-model="cooling" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      La habitación tiene servicio de jacuzzi ?
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="jacuzzi" required="true" v-model="jacuzzi" value="si" />
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="jacuzzi" required="true" v-model="jacuzzi" value="no" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="fo-top">
+
+            <div class=" form-group col-md-6 col-sm-6 col-xs-12">
+              <table class="table table-bordered">
+                <thead>
+                  <th style="width: 80%; padding-left: 10px">
+                    <b> INGRESE LOS SIGUIENTES DATOS </b>
+                  </th>
+                  <th style="width: 10%; text-align: center">
+                    SI
+                  </th>
+                  <th style="width: 10%; text-align: center">
+                    NO
+                  </th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>La habitación tiene radio ?</td>
+                    <td id="center-td">
+                      <input type="radio" name="rradio" value="si" required="true" v-model="rradio" />
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="rradio" required="true" value="no" v-model="rradio" lass="flat" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>La habitación tiene televisión ?</td>
+                    <td id="center-td">
+                      <input type="radio" name="tv" value="si" required="true" v-model="tv" />
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="tv" required="true" value="no" v-model="tv" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>La habitación tiene ventana ?</td>
+                    <td id="center-td">
+                      <input type="radio" name="roomWindow" value="si" required="true" v-model="roomWindow" />
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="roomWindow" required="true" value="no" v-model="roomWindow" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>La habitación tiene baño privado ?</td>
+                    <td id="center-td">
+                      <input type="radio" name="privateBathroom" value="si" required="true" v-model="privateBathroom" />
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="privateBathroom" required="true" value="no" v-model="privateBathroom" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      La habitación tiene mobiliario basico ?
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="furniture" value="si" required="true" v-model="furniture" />
+                    </td>
+                    <td id="center-td">
+                      <input type="radio" name="furniture" required="true" value="no" v-model="furniture" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class=" form-group col-md-6 col-sm-6 col-xs-12">
+              <div class="input-group">
+                <span class="input-group-addon">Seleccione la imagen</span>
+                <input type="file" ref="fileupload" accept=".jpg, .jpeg, .png, gif" class="form-control" @change="onImageChanged" name="imagen" />
+                <span class="input-group-addon">|</span>
+              </div>
+
               <p class="help-block">
-                <label for="focusedinput" class="col-sm-2 control-label"></label>
                 (.JPG, .PNG .GIF ->se recomienda que la imagen sea
                 tomada de forma horizontal, tamaño maximo 10MP)
               </p>
-              <div class=" form-group col-md-12 col-sm-12 col-xs-12 ">
-                <hr />
+            </div>
 
-                <button class="btn btn-success" style="width:78%">REGISTRAR HABITACIÓN</button>
-                <a href="/dashboard/bedrooms">
-                  <button type="button" class="btn btn-primary">
-                    Ver Habitaciones <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                  </button>
-                </a>
-              </div>
+            <div class=" form-group col-md-6 col-sm-6 col-xs-12">
+                 <img :src="previewImage" class="img-thumbnail mt-2" v-if="fileImage" style="width: 50%" />
+
+            </div>
+
+            <div class=" form-group col-md-12 col-sm-12 col-xs-12 ">
+              <hr />
+
+              <button class="btn btn-success" style="width:78%">REGISTRAR HABITACIÓN</button>
+              <a href="/dashboard/bedrooms">
+                <button type="button" class="btn btn-primary">
+                  Ver Habitaciones <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                </button>
+              </a>
+
             </div>
           </div>
         </form>
-        <br /><br />
+
       </div>
     </div>
   </div>
@@ -289,7 +302,7 @@ export default {
       this.fileImage = event.target.files[0];
       this.previewImage = URL.createObjectURL(this.fileImage);
       var fileSize = event.target.files[0].size;
-      if (fileSize > 1) {
+      if (fileSize > 100000000) {
         this.helper.helpers.error(
           "Lo Sentimos La imagen no debe pesar mas de 10MB, por favor introduzca una nueva",
           false,
@@ -329,10 +342,10 @@ export default {
           console.log("correct : ", response.data);
           if (response.data.success == "success") {
             this.helper.helpers.success(
-                "La reservación se registró con éxito",
-                false,
-                1500
-              );
+              "La reservación se registró con éxito",
+              false,
+              1500
+            );
             location.reload();
           } else {
             this.helper.helpers.error(

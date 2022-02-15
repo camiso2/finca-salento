@@ -1,100 +1,109 @@
 <template>
   <div>
     <preloader-component v-show="preloader" />
-    <form class="form-horizontal form-label-left input_mask" method="POST" role="form" @submit.prevent="invoiceSubmit">
-      <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-        <link rel="stylesheet" />
-        <h5>
-          <i class="fa fa-calculator fa-esp" aria-hidden="true"></i>Seleccione
-          la habitación a la que le desea facturar.
-        </h5>
-        <select v-model="selectedBedroom" @change="roomSeleted($event)" class="form-control" required="true">
-          <option value="">
-            &#xf236; &nbsp;&nbsp;Seleccione Habitacion para Facturar
-          </option>
-          <option v-for="bedroomCode in bedrooms" :value="bedroomCode.codeRoom" :key="bedroomCode.id">
-            {{ bedroomCode.codeRoom }}
-          </option>
-        </select>
-      </div>
-    </form>
-    <transition name="fade">
-      <form class="form-horizontal form-label-left input_mask" method="POST" role="form" action="/invoicePDF" target="_blank" v-if="showButtonGenerateInvoice" id="formReceipt">
-        <input type="hidden" v-model="invoiceBebroom_id" />
-        <input type="hidden" name="_token" :value="csrf" />
-        <input type="hidden" name="debroom_id" :value="debroom_id" />
-        <input type="hidden" name="user_id" :value="user_id" />
+    <div class="x_panel">
+      <div class="x_content">
 
-        <div v-if="disscount">
-          <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input type="number" v-model="disscountClient" class="form-control has-feedback-left" placeholder="descuento del cliente" name="disscountClient" />
-            <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
+        <form class="form-horizontal form-label-left input_mask" method="POST" role="form" @submit.prevent="invoiceSubmit">
+          <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+            <link rel="stylesheet" />
+            <h5>
+              <i class="fa fa-calculator fa-esp" aria-hidden="true"></i>Seleccione
+              la habitación a la que le desea facturar.
+            </h5>
+            <select v-model="selectedBedroom" @change="roomSeleted($event)" class="form-control" required="true">
+              <option value="">
+                &#xf236; &nbsp;&nbsp;Seleccione Habitacion para Facturar
+              </option>
+              <option v-for="bedroomCode in bedrooms" :value="bedroomCode.codeRoom" :key="bedroomCode.id">
+                {{ bedroomCode.codeRoom }}
+              </option>
+            </select>
           </div>
+        </form>
 
-          <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-            <input v-model="observations" id="" class="form-control text-ar" type="text" maxlength="100" placeholder="porque? " name="observations" />
+        <transition name="fade">
+
+          <form class="form-horizontal form-label-left input_mask" method="POST" role="form" action="/invoicePDF" target="_blank" v-if="showButtonGenerateInvoice" id="formReceipt">
+            <input type="hidden" v-model="invoiceBebroom_id" />
+            <input type="hidden" name="_token" :value="csrf" />
+            <input type="hidden" name="debroom_id" :value="debroom_id" />
+            <input type="hidden" name="user_id" :value="user_id" />
+
+            <div v-if="disscount">
+              <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                <input type="number" v-model="disscountClient" class="form-control has-feedback-left" placeholder="descuento del cliente" name="disscountClient" />
+                <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
+              </div>
+
+              <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                <input v-model="observations" id="" class="form-control text-ar" type="text" maxlength="100" placeholder="porque? " name="observations" />
+              </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+              <i class="fa fa-calculator fa-esp" aria-hidden="true"></i>Quiere
+              Reliazar Descuento al Cliente !
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+              <button type="button" class="btn btn-warning btn-block btn-lg" @click="reloadData">
+                <i class="fa fa-calculator fa-esp" aria-hidden="true"></i><b>PAGAR CUENTA DEL CLIENTE</b>
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </form>
+        </transition>
+
+        <transition name="fade">
+          <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+            <div v-if="showViewInvoice">
+              <h5><b>Costo por día : </b>{{ costDay }} COP</h5>
+              <h6><b>Cliente : </b>{{ nameClient }}</h6>
+
+              <table class="table table-bordered responsive-utilities jambo_table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 80%">DESCRIPCIÓN</th>
+                    <th scope="col">VALOR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Estadía de {{ totalStay }}</td>
+                    <td style="color: #0275d8; font-weigth: 600">
+                      $ {{ valueStay }}
+                    </td>
+                  </tr>
+                  <tr v-for="order in orders" :key="order.id" :value="order.id">
+                    <td>{{ order.order }}</td>
+                    <td>$ {{ NumberFormatJS(order.valueOrder.toString()) }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="1" style="text-align: right"><b>SUB-TOTAL.. </b></td>
+                    <td>$ {{ subTotal }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="1" style="text-align: right"><b>IVA </b></td>
+                    <td>$ {{ iva }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="1" style="text-align: right"><b>ANTICIPO </b></td>
+                    <td>$ {{ advance }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="1" style="text-align: right">
+                      <b>
+                        <span style="color: green">{{ balanceFavor }}</span> TOTAL
+                      </b>
+                    </td>
+                    <td>$ {{ total }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-          <i class="fa fa-calculator fa-esp" aria-hidden="true"></i>Quiere
-          Reliazar Descuento al Cliente !
-        </div>
-        <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-          <button type="button" class="btn btn-warning btn-block btn-lg" @click="reloadData">
-            <i class="fa fa-calculator fa-esp" aria-hidden="true"></i><b>PAGAR CUENTA DEL CLIENTE</b>
-            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-          </button>
-        </div>
-      </form>
-    </transition>
-
-    <transition name="fade">
-      <div v-if="showViewInvoice">
-        <h5><b>Costo por día : </b>{{ costDay }} COP</h5>
-        <h6><b>Cliente : </b>{{ nameClient }}</h6>
-
-        <table class="table table-bordered responsive-utilities jambo_table">
-          <thead>
-            <tr>
-              <th scope="col" style="width: 80%">DESCRIPCIÓN</th>
-              <th scope="col">VALOR</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Estadía de {{ totalStay }}</td>
-              <td style="color: #0275d8; font-weigth: 600">
-                $ {{ valueStay }}
-              </td>
-            </tr>
-            <tr v-for="order in orders" :key="order.id" :value="order.id">
-              <td>{{ order.order }}</td>
-              <td>$ {{ NumberFormatJS(order.valueOrder.toString()) }}</td>
-            </tr>
-            <tr>
-              <td colspan="1" style="text-align: right"><b>SUB-TOTAL.. </b></td>
-              <td>$ {{ subTotal }}</td>
-            </tr>
-            <tr>
-              <td colspan="1" style="text-align: right"><b>IVA </b></td>
-              <td>$ {{ iva }}</td>
-            </tr>
-            <tr>
-              <td colspan="1" style="text-align: right"><b>ANTICIPO </b></td>
-              <td>$ {{ advance }}</td>
-            </tr>
-            <tr>
-              <td colspan="1" style="text-align: right">
-                <b>
-                  <span style="color: green">{{ balanceFavor }}</span> TOTAL
-                </b>
-              </td>
-              <td>$ {{ total }}</td>
-            </tr>
-          </tbody>
-        </table>
+        </transition>
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 
@@ -178,9 +187,7 @@ export default {
                 : response.data.dayStay + dia + response.data.hourStay + hora;
 
             this.iva = this.NumberFormatJS(response.data.iva.toString());
-            this.valueStay = this.NumberFormatJS(
-              response.data.valueStay.toString()
-            );
+            this.valueStay = this.NumberFormatJS(response.data.valueStay.toString());
             this.subTotal = this.NumberFormatJS(
               response.data.subTotal.toString()
             );
