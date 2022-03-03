@@ -20,18 +20,17 @@ class RandomNameTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * sreturn name aleatory according param the entry
-     *
-     * @param Int $digit
-     * @return String
+     /**
+     * @author Jaiver Andrés  Ocampo
+     * @test
+     * @group  RandomName method randomName($param)
      */
     public function test_funcionality_for_generate_names_aleatories_diferente_to_null()
     {
-        //dado el siguiente parametro
+        //dado el siguiente valor
         $param = 15;
 
-        //cuando enviamos el parametro
+        //cuando enviamos el parametro 
         $service = new RandomName();
         $response = $service->randomName($param);
 

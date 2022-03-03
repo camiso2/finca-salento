@@ -45,6 +45,9 @@
 
 </head>
 <body>
+
+
+
 @include('sections.floating-button')
 @include('sections.whatsapp')
 @if (session('alert_error'))
@@ -145,6 +148,8 @@ Swal.fire({
                 </script>
                 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
             @yield('content')
+
+            <img src="" alt="">
         </main>
     </div>
 </body>

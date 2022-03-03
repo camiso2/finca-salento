@@ -35,6 +35,8 @@ class BedroomController extends Controller
 
     public function index()
     {
+        $listBedroom = registerBedroom::orderBy('id','desc');
+
         return View('dashboard.bedrooms', compact('listBedroom'));
     }
 
