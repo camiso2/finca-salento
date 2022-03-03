@@ -33,11 +33,6 @@ class BookingController extends Controller
     {
         try {
             //test linuxf uncionality
-            //test linuxf uncionality
-            //test linuxf uncionality
-            //test linuxf uncionality
-            //test linuxf uncionality
-           
             RegisterBoooking::create($request->all());
             return response()->json(['success' => 'success']);
         } catch (\Exception $e) {
