@@ -3,7 +3,7 @@
 
 Sistema desarrollado  
 
-El sistema esta desarrollado para administración total con diferentes funcionalidades
+Sistema de administración con diferentes funcionalidades para hotel turístico.
 
 
 Utilidades
@@ -14,6 +14,7 @@ Utilidades
 * Facturación (pdf).
 * Ventas.
 * Reservas.
+* Inventario.
 * Disponibilidad de habitaciones.
 * Inicio se sesión token
 * Editar datos de administrador
