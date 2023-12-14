@@ -1,4 +1,4 @@
-## Proyecto para finca turistica en Quindío, Colombia
+## Proyecto para finca turística en Quindío, Colombia
 
 
 Sistema desarrollado  
